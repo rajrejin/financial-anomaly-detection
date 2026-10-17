@@ -12,7 +12,7 @@
 | Test period (2019 onward) | 6 of 6 events, 4.24 false alarm episodes per year, AP 0.217 |
 | Data hash | `c747aa62dba8e5fa` |
 | Events hash | `aee345cc128dab34` |
-| Git commit at export | `6ca68ee51b` |
+| Git commit at export | `85c2d5d8a5` |
 <!-- END:modelcard -->
 
 ## Intended use
