@@ -1,0 +1,10 @@
+{
+  "experiment_all_families_seconds": {
+    "isolation_forest": 12.0,
+    "autoencoder": 69.0,
+    "lightgbm": 4.6,
+    "xgboost": 16.8
+  },
+  "source": "logs/experiment_all.log (finanomaly experiment --family all, 28 runs, includes MLflow logging and model packaging)",
+  "experiment_all_families_total_seconds": 102.4
+}

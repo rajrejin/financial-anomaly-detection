@@ -13,7 +13,7 @@ import pandas as pd
 
 from finanomaly.config import Config, load_config
 from finanomaly.features import build_features
-from finanomaly.serving.export import file_checksums
+from finanomaly.serving.manifest import file_checksums
 
 
 class ModelLoadError(RuntimeError):

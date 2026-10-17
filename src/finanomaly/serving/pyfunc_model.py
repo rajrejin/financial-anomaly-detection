@@ -10,17 +10,22 @@ import numpy as np
 import pandas as pd
 from mlflow.pyfunc import PythonModel
 
-from finanomaly.models.autoencoder import AutoencoderModel
 from finanomaly.models.base import AnomalyModel
-from finanomaly.models.iforest import IsolationForestModel
-from finanomaly.models.trees import LightGBMModel, XGBoostModel
 
-CLASSES: dict[str, type[AnomalyModel]] = {
-    "isolation_forest": IsolationForestModel,
-    "autoencoder": AutoencoderModel,
-    "lightgbm": LightGBMModel,
-    "xgboost": XGBoostModel,
-}
+
+def model_class(family: str) -> type[AnomalyModel]:
+    """Resolve the model class lazily so serving only imports what the model needs."""
+    if family == "isolation_forest":
+        from finanomaly.models.iforest import IsolationForestModel
+
+        return IsolationForestModel
+    if family == "autoencoder":
+        from finanomaly.models.autoencoder import AutoencoderModel
+
+        return AutoencoderModel
+    from finanomaly.models.trees import LightGBMModel, XGBoostModel
+
+    return {"lightgbm": LightGBMModel, "xgboost": XGBoostModel}[family]
 
 
 def save_model_dir(model: AnomalyModel, path: Path, meta: dict[str, Any]) -> None:
@@ -34,7 +39,7 @@ class AnomalyPyfunc(PythonModel):
     def load_context(self, context: Any) -> None:
         d = Path(context.artifacts["model_dir"])
         self.meta = json.loads((d / "meta.json").read_text())
-        self.model = CLASSES[self.meta["family"]].load(d / "model")
+        self.model = model_class(self.meta["family"]).load(d / "model")
         self.threshold = float(self.meta["threshold"])
         self.features: list[str] = list(self.meta["features"])
 

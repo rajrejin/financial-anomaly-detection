@@ -1,0 +1,51 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install
+        run: |
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements-dev.txt
+          pip install -e .
+      - name: Fetch real data (raw responses are cached on the runner, nothing is committed)
+        run: |
+          finanomaly fetch
+          finanomaly build-dataset
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Type check
+        run: mypy src api
+      - name: Tests (tests needing cached data skip when the cache is absent)
+        run: pytest --cov --cov-fail-under=80
+  helm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - name: Lint
+        run: helm lint deploy/helm/anomaly-api
+      - name: Validate rendered manifests
+        run: |
+          curl -sL https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz | tar xz
+          helm template rel deploy/helm/anomaly-api | ./kubeconform -strict -summary -kubernetes-version 1.30.0
+          helm template rel deploy/helm/anomaly-api --set apiKey.enabled=true --set apiKey.value=x | ./kubeconform -strict -summary -kubernetes-version 1.30.0
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build API image with a placeholder-free model directory only if one is committed
+        run: |
+          if [ -f models_export/manifest.json ]; then
+            docker build -f docker/Dockerfile.api -t finanomaly-api:ci .
+          else
+            echo "models_export is not committed (it is produced by 'finanomaly export-model'); skipping image build"
+          fi

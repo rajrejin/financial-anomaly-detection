@@ -1,0 +1,40 @@
+# Run from the repository root:  docker compose -f docker/docker-compose.yml up --build
+services:
+  mlflow:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.mlflow
+    ports: ["5000:5000"]
+    volumes: ["mlflow-data:/mlflow"]
+    mem_limit: 2g
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=4)"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+      args:
+        FAMILY: ${MODEL_FAMILY:-isolation_forest}
+    image: finanomaly-api:${MODEL_VERSION:-local}
+    ports: ["8000:8000"]
+    environment:
+      ANOMALY_API_KEY: ${ANOMALY_API_KEY:-}
+    mem_limit: 512m
+    read_only: true
+    tmpfs: ["/tmp"]
+  trainer:
+    profiles: ["train"]
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.trainer
+    environment:
+      FINANOMALY_MLFLOW_URI: http://mlflow:5000
+    depends_on: [mlflow]
+    mem_limit: 3g
+    volumes: ["../data:/app/data", "../results:/app/results"]
+    command: ["finanomaly", "experiment", "--family", "all"]
+volumes:
+  mlflow-data: {}

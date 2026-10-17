@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1
+# One-shot trainer: runs the experiments against the MLflow service. Needs data/raw mounted.
+FROM python:3.13-slim-bookworm
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_NO_CACHE_DIR=1 FINANOMALY_ROOT=/app
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
+COPY pyproject.toml ./
+COPY src ./src
+COPY configs ./configs
+COPY data/events.yaml ./data/events.yaml
+RUN pip install --no-deps .
+CMD ["finanomaly", "experiment", "--family", "all"]

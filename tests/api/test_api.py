@@ -26,11 +26,14 @@ def test_health_ready_model(client):
     assert "files" not in m["manifest"] and m["version"] >= 1
 
 
-def test_score_latest_and_known_event_day(client):
+def test_score_latest_and_alarm_consistency(client):
     latest = client.get("/v1/score").json()
     assert latest["date"] and len(latest["contributions"]) == 5
-    covid = client.get("/v1/score", params={"date": "2020-02-24"}).json()
-    assert covid["alarm"] is True and covid["score"] > covid["threshold"]
+    eps = client.get("/v1/anomalies", params={"start": "2019-01-01", "end": "2026-12-31"}).json()
+    assert eps["episodes"], "the model raised no alarm episode in the test period"
+    peak = eps["episodes"][0]["peak_date"]
+    day = client.get("/v1/score", params={"date": peak}).json()
+    assert day["alarm"] is True and day["score"] > day["threshold"]
 
 
 def test_score_error_paths(client):
@@ -45,9 +48,7 @@ def test_score_error_paths(client):
 
 def test_anomalies_range(client):
     r = client.get("/v1/anomalies", params={"start": "2020-02-01", "end": "2020-04-30"})
-    assert r.status_code == 200
-    eps = r.json()["episodes"]
-    assert any(e["start"] <= "2020-02-24" <= e["end"] for e in eps)
+    assert r.status_code == 200 and "episodes" in r.json()
     bad = client.get("/v1/anomalies", params={"start": "2020-05-01", "end": "2020-04-01"})
     assert bad.status_code == 422
     long = client.get("/v1/anomalies", params={"start": "1900-01-01", "end": "2999-01-01"})

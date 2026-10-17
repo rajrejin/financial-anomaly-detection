@@ -210,3 +210,12 @@ def refresh() -> None:
     from finanomaly.data.refresh import refresh as do_refresh
 
     typer.echo(do_refresh(get_config()))
+
+
+@app.command()
+def report() -> None:
+    """Regenerate the generated blocks of README.md from results/."""
+    from finanomaly.config import get_config
+    from finanomaly.evaluation.readme_blocks import update_readme
+
+    typer.echo(update_readme(get_config()))

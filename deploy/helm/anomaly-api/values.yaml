@@ -1,0 +1,30 @@
+# Single replica on purpose: a local demonstration, not a production cluster.
+replicaCount: 1
+image:
+  repository: finanomaly-api
+  tag: "v1"            # equals the model version baked into the image
+  pullPolicy: IfNotPresent   # image is loaded into Minikube with `minikube image load`
+service:
+  type: ClusterIP
+  port: 8000
+settings:
+  ANOMALY_STALE_DAYS: "5"
+  ANOMALY_MAX_RANGE_DAYS: "3700"
+  ANOMALY_REQUEST_TIMEOUT_S: "30"
+  ANOMALY_JSON_LOGS: "true"
+apiKey:
+  enabled: false       # when true a Secret named <release>-api-key is created
+  value: ""
+resources:
+  requests: {cpu: 250m, memory: 256Mi}
+  limits: {cpu: "1", memory: 768Mi}
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities: {drop: ["ALL"]}
+probes:
+  liveness: {path: /v1/health, initialDelaySeconds: 20, periodSeconds: 15, timeoutSeconds: 3}
+  readiness: {path: /v1/ready, initialDelaySeconds: 20, periodSeconds: 10, timeoutSeconds: 3}
