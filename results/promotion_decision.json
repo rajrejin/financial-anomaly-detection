@@ -1,0 +1,86 @@
+{
+  "baseline_recall": 1.0,
+  "production_before": null,
+  "results": [
+    {
+      "candidate": {
+        "name": "anomaly-isolation-forest",
+        "family": "isolation_forest",
+        "version": 1,
+        "recall": 1.0,
+        "fa_rate": 2.4868,
+        "ap": 0.2526153481210771,
+        "recall_std": 0.0,
+        "explanations_ok": true,
+        "contract_ok": true
+      },
+      "reference_recall": 1.0,
+      "checks": {
+        "recall_vs_reference": true,
+        "recall_vs_best_baseline": true,
+        "false_alarm_within_budget": true,
+        "seed_spread_acceptable": true,
+        "explanations_available": true,
+        "serving_contract": true
+      },
+      "passes": true
+    },
+    {
+      "candidate": {
+        "name": "anomaly-autoencoder",
+        "family": "autoencoder",
+        "version": 1,
+        "recall": 0.6667,
+        "fa_rate": 2.7632,
+        "ap": 0.253830343888285,
+        "recall_std": 0.0,
+        "explanations_ok": true,
+        "contract_ok": true
+      },
+      "reference_recall": 1.0,
+      "checks": {
+        "recall_vs_reference": false,
+        "recall_vs_best_baseline": false,
+        "false_alarm_within_budget": true,
+        "seed_spread_acceptable": true,
+        "explanations_available": true,
+        "serving_contract": true
+      },
+      "passes": false
+    },
+    {
+      "candidate": {
+        "name": "anomaly-lightgbm",
+        "family": "lightgbm",
+        "version": 1,
+        "recall": 1.0,
+        "fa_rate": 2.4868,
+        "ap": 0.20916276434333178,
+        "recall_std": 0.1333,
+        "explanations_ok": true,
+        "contract_ok": true
+      },
+      "reference_recall": 1.0,
+      "checks": {
+        "recall_vs_reference": true,
+        "recall_vs_best_baseline": true,
+        "false_alarm_within_budget": true,
+        "seed_spread_acceptable": true,
+        "explanations_available": true,
+        "serving_contract": true
+      },
+      "passes": true
+    }
+  ],
+  "champion": {
+    "name": "anomaly-isolation-forest",
+    "family": "isolation_forest",
+    "version": 1,
+    "recall": 1.0,
+    "fa_rate": 2.4868,
+    "ap": 0.2526153481210771,
+    "recall_std": 0.0,
+    "explanations_ok": true,
+    "contract_ok": true
+  }
+}

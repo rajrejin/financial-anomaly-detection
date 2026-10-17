@@ -104,3 +104,54 @@ def experiment(
     for f in fams:
         typer.echo(run_family(ctx, f, seed))
     typer.echo(f"{len(export_summary(cfg))} validation runs in results/runs_summary.csv")
+
+
+@app.command()
+def register() -> None:
+    """Register the best configuration of each family and set the staging alias."""
+    from finanomaly.config import get_config
+    from finanomaly.context import load_context
+    from finanomaly.experiments.registry import register_all
+
+    ctx = load_context(get_config())
+    for fam, info in register_all(ctx).items():
+        typer.echo(f"{fam}: {info['name']} v{info['version']} cfg{info['config_idx']}")
+
+
+@app.command()
+def promote() -> None:
+    """Run the promotion gate, set the production alias and write the decision document."""
+    from finanomaly.config import get_config
+    from finanomaly.context import load_context
+    from finanomaly.experiments.decision_doc import write_decision_doc
+    from finanomaly.experiments.registry import run_promotion
+
+    cfg = get_config()
+    decision = run_promotion(load_context(cfg))
+    write_decision_doc(cfg)
+    champ = decision["champion"]
+    typer.echo(f"champion: {champ['name'] if champ else None}")
+
+
+@app.command()
+def evaluate(
+    stability: bool = typer.Option(True, help="also run seed and rank stability"),
+) -> None:
+    """Test-period evaluation (run once, after the promotion decision)."""
+    from finanomaly.config import get_config
+    from finanomaly.context import load_context
+    from finanomaly.evaluation.test_eval import evaluate_test, rank_stability, seed_stability
+    from finanomaly.experiments.decision_doc import write_decision_doc
+
+    cfg = get_config()
+    ctx = load_context(cfg)
+    summary = evaluate_test(ctx)
+    for e in summary["entries"]:
+        typer.echo(
+            f"{e['label']}: {e['n_detected']}/{e['n_events']} fa={e['false_alarm_rate']:.2f} "
+            f"ap={e['average_precision']}"
+        )
+    if stability:
+        seed_stability(ctx)
+        rank_stability(ctx)
+    write_decision_doc(cfg)

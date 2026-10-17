@@ -6,9 +6,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from mlflow.pyfunc import PythonModel
 import numpy as np
 import pandas as pd
+from mlflow.pyfunc import PythonModel
 
 from finanomaly.models.autoencoder import AutoencoderModel
 from finanomaly.models.base import AnomalyModel
