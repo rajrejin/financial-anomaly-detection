@@ -40,9 +40,9 @@ ANNOTATIONS: dict[str, tuple[str, str]] = {
     ),
     "2022-04-19": (NOT_FOUND, ""),
     "2026-03-03": (
-        "Not confirmed. Search results mention a Middle East conflict and sharp DAX declines in "
-        "early March 2026 but no dated source for this day was retrieved.",
-        "",
+        "Middle East conflict between the US and Iran; the STOXX 600 closed 3.2 percent lower "
+        "and the DAX was among the sharpest decliners per the report.",
+        "https://www.cnbc.com/2026/03/03/european-markets-stoxx-600-ftse-dax-cac-iran-latest-spring-statement-uk.html",
     ),
     "2023-12-14": (
         "Day after the Fed held rates and projected cuts for 2024; bond yields fell. The DAX move "
@@ -69,7 +69,11 @@ ANNOTATIONS: dict[str, tuple[str, str]] = {
         "Omicron variant news; the DAX lost more than 3.2 percent between 25 and 26 November.",
         "https://www.aktienwelt360.de/2021/12/03/omikron-crash-oder-aktienboom/",
     ),
-    "2026-05-06": (NOT_FOUND, ""),
+    "2026-05-06": (
+        "Rally day: a single wire report gives the DAX up 2.12 percent; the cause was not "
+        "sourced (the surrounding sessions were dominated by news of the US Iran war).",
+        "https://armenpress.am/en/article/1249518/amp",
+    ),
     "2022-10-04": (
         "Rally day: the DAX gapped higher on 4 October (the model flags unusual moves in either "
         "direction).",

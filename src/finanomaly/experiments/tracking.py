@@ -45,6 +45,8 @@ def get_experiment(client: MlflowClient, cfg: Config, name: str) -> str:
     exp = client.get_experiment_by_name(name)
     if exp is not None:
         return exp.experiment_id
+    if tracking_uri(cfg).startswith("http"):
+        return client.create_experiment(name)  # the server owns the artifact store
     art = (Path(cfg.root) / cfg.mlflow.artifact_root / name.replace("/", "_")).resolve().as_uri()
     return client.create_experiment(name, artifact_location=art)
 

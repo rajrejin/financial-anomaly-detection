@@ -32,9 +32,11 @@ services:
       dockerfile: docker/Dockerfile.trainer
     environment:
       FINANOMALY_MLFLOW_URI: http://mlflow:5000
-    depends_on: [mlflow]
-    mem_limit: 3g
-    volumes: ["../data:/app/data", "../results:/app/results"]
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    mem_limit: 1400m
+    volumes: ["../data:/app/data", "../results/trainer:/app/results"]
     command: ["finanomaly", "experiment", "--family", "all"]
 volumes:
   mlflow-data: {}

@@ -18,3 +18,5 @@ htmlcov/
 build/
 dist/
 data/raw_start2000/
+.tools/
+results/trainer/

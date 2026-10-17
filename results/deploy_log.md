@@ -23,15 +23,31 @@ observed command output from this session.
 * The `trainer` profile (`--profile train`) is defined but was not run: it needs `data/raw`
   mounted and runs the same experiments already performed locally.
 
-## Kubernetes
+## Compose trainer profile
 
-* **Chart validated, not deployed.** Minikube is not installed: `winget install Kubernetes.minikube`
-  needs administrator rights (the UAC prompt was cancelled; no user-scope installer exists), and
-  the specification asks to record the gap rather than use another route.
-* Helm 4.3.1 and kubeconform 0.8.0 were installed at user scope with winget.
-* `helm lint deploy/helm/anomaly-api`: 1 chart linted, 0 failed.
-* `helm template rel deploy/helm/anomaly-api | kubeconform -strict -kubernetes-version 1.30.0`:
-  3 resources valid, 0 invalid. With `--set apiKey.enabled=true` 4 resources validate (0 invalid).
-* The scripts `deploy/minikube/up.ps1`, `up.sh`, `down.ps1` and `down.sh` were written but have not
-  been executed. To run them: install minikube, run `scripts/build_image.ps1`, then
-  `deploy/minikube/up.ps1` from the repository root.
+* `docker compose --profile train up trainer` builds `docker/Dockerfile.trainer`, waits for the
+  MLflow service to be healthy and runs `finanomaly experiment --family all` against the server over
+  HTTP. Two things had to be fixed first: the MLflow server rejected the compose host name (403
+  invalid Host header) until `--allowed-hosts` was added, and the experiment must not set a local
+  artifact location when a server is used.
+* The container logged all 7 Isolation Forest runs to the server (a rerun skipped all 7 as
+  finished, confirming resumability over HTTP). The full set was started but the Docker VM (3.5 GB,
+  shared with another project's container) stopped responding while MLflow (1.6 GiB) and the trainer
+  (1.4 GiB limit) ran together; Docker Desktop was restarted. The full 28-run set through compose was
+  therefore not completed; it was run locally instead (`results/runtime.json`).
+* The trainer mounted `results/` and overwrote `runs_summary.csv` with its 7 rows once; this was
+  restored from git and the mount now points to `results/trainer/`.
+
+## Kubernetes (Minikube)
+
+* Minikube v1.39.0 could not be installed with winget without administrator rights, so the official
+  portable `minikube-windows-amd64.exe` release was downloaded to the git-ignored `.tools/` folder.
+  Helm 4.3.1 and kubeconform 0.8.0 are user-scope winget installs.
+* `deploy/minikube/up.ps1` (Docker driver, 2 CPUs, 3072 MB): cluster start, image load, `helm
+  upgrade --install --wait`, rollout and port-forward smoke test completed in 219 seconds from a
+  cold cluster, including a 508 MB base image download. Smoke test: 7 of 7 checks passed against the
+  pod. Pod 1/1 Running, ClusterIP service on 8000, uid 10001, requests 250m and 256Mi, limits 1 CPU
+  and 768Mi.
+* `deploy/minikube/down.ps1`: release uninstalled and the cluster stopped in 21 seconds.
+* `helm lint`: 1 chart linted, 0 failed. `helm template ... | kubeconform -strict -kubernetes-version
+  1.30.0`: 3 resources valid; with `--set apiKey.enabled=true`, 4 valid.

@@ -439,8 +439,9 @@ Isolation forest permutation sensitivity (test AP 0.217), largest AP drops:
 * **Helm** (`deploy/helm/anomaly-api`): one Deployment with one replica, a Service, a ConfigMap,
   an optional Secret for the API key, liveness and readiness probes, resource requests and limits,
   a non-root read-only security context. No Ingress, HPA or volume.
-* **Minikube**: `deploy/minikube/up.ps1` and `down.ps1`. See `results/deploy_log.md` for what was
-  and was not run on this machine.
+* **Minikube**: `deploy/minikube/up.ps1` and `down.ps1`. The chart was deployed on Minikube v1.39.0
+  (Docker driver, 2 CPUs, 3 GB) and the smoke test passed 7 of 7 checks through a port-forward; see
+  `results/deploy_log.md` for timings and for what was not run.
 
 This is a single-pod demonstration on a local cluster, not a production cluster. A real one would
 add replicas and autoscaling, an ingress with authentication, a managed image registry, proper
