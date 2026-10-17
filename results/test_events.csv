@@ -1,0 +1,31 @@
+entry,event,onset,detected,delay_days
+rule_return,covid_crash_2020,2020-02-24,True,0.0
+rule_return,ukraine_invasion_2022,2022-02-24,True,0.0
+rule_return,ecb_hike_2022,2022-07-21,False,
+rule_return,svb_credit_suisse_2023,2023-03-10,False,
+rule_return,carry_unwind_2024,2024-08-05,True,-2.0
+rule_return,tariff_shock_2025,2025-04-03,True,0.0
+rule_vol,covid_crash_2020,2020-02-24,True,1.0
+rule_vol,ukraine_invasion_2022,2022-02-24,False,
+rule_vol,ecb_hike_2022,2022-07-21,False,
+rule_vol,svb_credit_suisse_2023,2023-03-10,False,
+rule_vol,carry_unwind_2024,2024-08-05,False,
+rule_vol,tariff_shock_2025,2025-04-03,True,1.0
+anomaly-isolation-forest (champion),covid_crash_2020,2020-02-24,True,0.0
+anomaly-isolation-forest (champion),ukraine_invasion_2022,2022-02-24,True,0.0
+anomaly-isolation-forest (champion),ecb_hike_2022,2022-07-21,True,9.0
+anomaly-isolation-forest (champion),svb_credit_suisse_2023,2023-03-10,True,1.0
+anomaly-isolation-forest (champion),carry_unwind_2024,2024-08-05,True,-1.0
+anomaly-isolation-forest (champion),tariff_shock_2025,2025-04-03,True,0.0
+anomaly-autoencoder,covid_crash_2020,2020-02-24,True,10.0
+anomaly-autoencoder,ukraine_invasion_2022,2022-02-24,True,0.0
+anomaly-autoencoder,ecb_hike_2022,2022-07-21,True,4.0
+anomaly-autoencoder,svb_credit_suisse_2023,2023-03-10,True,1.0
+anomaly-autoencoder,carry_unwind_2024,2024-08-05,False,
+anomaly-autoencoder,tariff_shock_2025,2025-04-03,True,2.0
+anomaly-lightgbm,covid_crash_2020,2020-02-24,True,0.0
+anomaly-lightgbm,ukraine_invasion_2022,2022-02-24,True,0.0
+anomaly-lightgbm,ecb_hike_2022,2022-07-21,False,
+anomaly-lightgbm,svb_credit_suisse_2023,2023-03-10,True,1.0
+anomaly-lightgbm,carry_unwind_2024,2024-08-05,True,-2.0
+anomaly-lightgbm,tariff_shock_2025,2025-04-03,True,-2.0

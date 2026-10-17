@@ -1,0 +1,99 @@
+{
+  "entries": [
+    {
+      "label": "rule_return",
+      "n_events": 6,
+      "n_detected": 4,
+      "event_recall": 0.6666666666666666,
+      "false_alarm_episodes": 20,
+      "false_alarm_rate": 2.8251121076233185,
+      "average_precision": 0.1494384048759584,
+      "roc_auc": 0.6742412417620534,
+      "score_separation": 0.8122329188116841
+    },
+    {
+      "label": "rule_vol",
+      "n_events": 6,
+      "n_detected": 2,
+      "event_recall": 0.3333333333333333,
+      "false_alarm_episodes": 3,
+      "false_alarm_rate": 0.42376681614349776,
+      "average_precision": 0.14939790392492308,
+      "roc_auc": 0.8023196323274366,
+      "score_separation": 1.3691877477752512
+    },
+    {
+      "label": "anomaly-isolation-forest (champion)",
+      "n_events": 6,
+      "n_detected": 6,
+      "event_recall": 1.0,
+      "false_alarm_episodes": 30,
+      "false_alarm_rate": 4.237668161434978,
+      "average_precision": 0.21650715709793147,
+      "roc_auc": 0.87798300381547,
+      "score_separation": 1.7088882255015982
+    },
+    {
+      "label": "anomaly-autoencoder",
+      "n_events": 6,
+      "n_detected": 5,
+      "event_recall": 0.8333333333333334,
+      "false_alarm_episodes": 29,
+      "false_alarm_rate": 4.096412556053812,
+      "average_precision": 0.1151619647544081,
+      "roc_auc": 0.8275580992022198,
+      "score_separation": 1.127879644229503
+    },
+    {
+      "label": "anomaly-lightgbm",
+      "n_events": 6,
+      "n_detected": 5,
+      "event_recall": 0.8333333333333334,
+      "false_alarm_episodes": 10,
+      "false_alarm_rate": 1.4125560538116593,
+      "average_precision": 0.23273054122281422,
+      "roc_auc": 0.8550121401318072,
+      "score_separation": 1.4984763436763964
+    }
+  ],
+  "champion": "anomaly-isolation-forest",
+  "champion_events": [
+    {
+      "event": "covid_crash_2020",
+      "onset": "2020-02-24",
+      "detected": true,
+      "delay_days": 0
+    },
+    {
+      "event": "ukraine_invasion_2022",
+      "onset": "2022-02-24",
+      "detected": true,
+      "delay_days": 0
+    },
+    {
+      "event": "ecb_hike_2022",
+      "onset": "2022-07-21",
+      "detected": true,
+      "delay_days": 9
+    },
+    {
+      "event": "svb_credit_suisse_2023",
+      "onset": "2023-03-10",
+      "detected": true,
+      "delay_days": 1
+    },
+    {
+      "event": "carry_unwind_2024",
+      "onset": "2024-08-05",
+      "detected": true,
+      "delay_days": -1
+    },
+    {
+      "event": "tariff_shock_2025",
+      "onset": "2025-04-03",
+      "detected": true,
+      "delay_days": 0
+    }
+  ],
+  "note": "Thresholds were fixed on pre-2019 data. Six test events give very little statistical power, so the per-event rows matter more than the aggregates."
+}

@@ -165,7 +165,7 @@ def seed_stability(ctx: Context) -> dict[str, Any]:
     seeds = list(load_experiments()["seeds_final"])
     gap = ctx.cfg.alarm.merge_gap_days
     out: dict[str, Any] = {}
-    for info in reg.values():
+    for family, info in reg.items():
         idx, params = info["config_idx"], load_experiments()[family][info["config_idx"]]
         rec, far, ap = [], [], []
         for s in seeds:
