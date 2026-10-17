@@ -1,0 +1,35 @@
+# Single configuration file. Frozen parts (windows, splits) are hashed in results/events_frozen.json.
+seed: 0
+paths:
+  raw: data/raw
+  processed: data/processed
+  results: results
+  events: data/events.yaml
+data:
+  start: "2000-01-01"
+  max_ffill_days: 3
+  bundesbank_base: "https://api.statistiken.bundesbank.de/rest"
+  ecb_base: "https://data-api.ecb.europa.eu/service/data"
+windows:
+  label_days: 10          # onset day plus the next 9 trading days
+  detect_before: 2        # trading days before onset
+  detect_after: 20        # trading days after onset
+  buffer_days: 10         # excluded from false alarm counting
+splits:
+  fit_start: "2000-01-01"
+  val_start: "2015-01-01"
+  val_end: "2018-12-31"
+  test_start: "2019-01-01"
+alarm:
+  budget_per_year: 3.0
+  merge_gap_days: 3
+features:
+  vol_windows: [5, 20, 60]
+  z_window: 252
+  corr_window: 60
+  drawdown_window: 252
+mlflow:
+  tracking_uri: "sqlite:///mlflow.db"
+  artifact_root: "mlartifacts"
+serving:
+  model_dir: models_export

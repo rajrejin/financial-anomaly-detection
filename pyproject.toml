@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finanomaly"
+version = "0.1.0"
+description = "Financial market anomaly detection with an MLOps lifecycle"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy", "pandas", "pyarrow", "scipy", "scikit-learn", "lightgbm", "xgboost",
+  "torch", "shap", "mlflow", "yfinance", "httpx", "tenacity", "pydantic",
+  "pydantic-settings", "pyyaml", "typer", "matplotlib", "plotly", "fastapi",
+  "uvicorn", "prometheus-client", "psutil",
+]
+
+[project.scripts]
+finanomaly = "finanomaly.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "api", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = false
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = ["needs_data: requires cached real data"]
+
+[tool.coverage.run]
+source = ["src/finanomaly", "api"]
