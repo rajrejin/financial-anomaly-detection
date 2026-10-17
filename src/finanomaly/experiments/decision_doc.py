@@ -117,6 +117,16 @@ def write_decision_doc(cfg: Config) -> str:
                     f"| {e['event']} | {'yes' if e['detected'] else 'no'} | "
                     f"{'n/a' if d is None else d} |"
                 )
+        if champ is not None:
+            ce = next((e for e in t["entries"] if e["label"].startswith(champ["name"])), None)
+            if ce is not None and ce["false_alarm_rate"] > cfg.alarm.budget_per_year:
+                lines += [
+                    "",
+                    f"The champion's test false alarm rate ({_f(ce['false_alarm_rate'], 2)} per "
+                    f"year) exceeds the budget of {cfg.alarm.budget_per_year:.0f} per year used to "
+                    "set its threshold on 2015 to 2018 data: the threshold did not carry over "
+                    "to the test period.",
+                ]
         lines += ["", t.get("note", "")]
     else:
         lines.append("Not yet evaluated.")

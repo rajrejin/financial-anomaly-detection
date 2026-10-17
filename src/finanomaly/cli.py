@@ -155,3 +155,12 @@ def evaluate(
         seed_stability(ctx)
         rank_stability(ctx)
     write_decision_doc(cfg)
+
+
+@app.command()
+def review() -> None:
+    """Write docs/FALSE_ALARM_REVIEW.md from results/test_false_alarms.csv."""
+    from finanomaly.config import get_config
+    from finanomaly.evaluation.review import write_review
+
+    typer.echo(write_review(get_config())[:600])

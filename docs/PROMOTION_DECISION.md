@@ -43,4 +43,25 @@ With three validation events recall takes only the values 0, 1/3, 2/3 and 1, so 
 
 ## Test period results (reported after the decision)
 
-Not yet evaluated.
+| Entry | Events detected | Event recall | False alarm episodes per year | AP |
+|---|---|---|---|---|
+| rule_return | 4 of 6 | 0.667 | 2.83 | 0.149 |
+| rule_vol | 2 of 6 | 0.333 | 0.42 | 0.149 |
+| anomaly-isolation-forest (champion) | 6 of 6 | 1.000 | 4.24 | 0.217 |
+| anomaly-autoencoder | 5 of 6 | 0.833 | 4.10 | 0.115 |
+| anomaly-lightgbm | 5 of 6 | 0.833 | 1.41 | 0.233 |
+
+Per-event outcome of the champion (anomaly-isolation-forest):
+
+| Event | Detected | Delay (trading days) |
+|---|---|---|
+| covid_crash_2020 | yes | 0 |
+| ukraine_invasion_2022 | yes | 0 |
+| ecb_hike_2022 | yes | 9 |
+| svb_credit_suisse_2023 | yes | 1 |
+| carry_unwind_2024 | yes | -1 |
+| tariff_shock_2025 | yes | 0 |
+
+The champion's test false alarm rate (4.24 per year) exceeds the budget of 3 per year used to set its threshold on 2015 to 2018 data: the threshold did not carry over to the test period.
+
+Thresholds were fixed on pre-2019 data. Six test events give very little statistical power, so the per-event rows matter more than the aggregates.

@@ -1,0 +1,17 @@
+{
+  "autoencoder": {
+    "spearman_val_ap_vs_test_ap": 0.42857142857142866,
+    "spearman_val_recall_vs_test_recall": null,
+    "n_configs": 7
+  },
+  "isolation_forest": {
+    "spearman_val_ap_vs_test_ap": -0.14285714285714288,
+    "spearman_val_recall_vs_test_recall": null,
+    "n_configs": 7
+  },
+  "lightgbm": {
+    "spearman_val_ap_vs_test_ap": 0.8571428571428573,
+    "spearman_val_recall_vs_test_recall": 0.48758163322320075,
+    "n_configs": 7
+  }
+}
