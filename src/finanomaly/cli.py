@@ -68,3 +68,20 @@ def events_freeze() -> None:
     from finanomaly.events import freeze
 
     typer.echo(freeze(get_config()))
+
+
+@app.command()
+def baselines() -> None:
+    """Evaluate the rule baselines on the validation period."""
+    from finanomaly.config import get_config
+    from finanomaly.context import load_context
+    from finanomaly.evaluation.report import evaluate_baselines_validation
+
+    ctx = load_context(get_config())
+    out = evaluate_baselines_validation(ctx)
+    for k, v in out.items():
+        r = v["validation"]
+        typer.echo(
+            f"{k}: thr={v['threshold']:.3f} recall={r['event_recall']} "
+            f"fa_rate={r['false_alarm_rate']:.2f} ap={r['average_precision']}"
+        )

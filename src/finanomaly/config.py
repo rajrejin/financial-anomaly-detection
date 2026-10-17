@@ -32,6 +32,7 @@ class Splits(BaseModel):
 class Alarm(BaseModel):
     budget_per_year: float
     merge_gap_days: int
+    max_alarm_day_share: float = 0.05
 
 
 class Features(BaseModel):

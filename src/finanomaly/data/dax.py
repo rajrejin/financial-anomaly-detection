@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 def fetch_dax(cfg: Config) -> pd.DataFrame:
-    cache = cfg.path("raw") / "dax" / "gdaxi_yfinance.csv.gz"
+    cache = cfg.path("raw") / "dax" / f"gdaxi_yfinance_from{cfg.data.start[:4]}.csv.gz"
     cache.parent.mkdir(parents=True, exist_ok=True)
     if cache.exists():
         return _read(gzip.decompress(cache.read_bytes()))

@@ -18,7 +18,7 @@ SERIES: dict[str, tuple[str, str]] = {
 
 def fetch_series(cfg: Config, name: str) -> pd.DataFrame | None:
     flow, key = SERIES[name]
-    cache = cfg.path("raw") / "ecb" / f"{flow}_{key}.csv.gz"
+    cache = cfg.path("raw") / "ecb" / f"{flow}_{key}_from{cfg.data.start[:4]}.csv.gz"
     body = fetch_cached(
         f"{cfg.data.ecb_base}/{flow}/{key}",
         {"format": "csvdata", "startPeriod": cfg.data.start},

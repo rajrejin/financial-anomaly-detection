@@ -38,7 +38,9 @@ episode rate does not exceed 3 episodes per year. For tuning, models are fit bef
 thresholds calibrated on 2015 to 2018 non-event days. For the supervised model, the final refit
 uses the validation-stage probability threshold (in-sample probabilities are not usable for
 calibration); unsupervised refits calibrate on the 2015 to 2018 non-event days of the refit model.
-Alarm episodes: maximal alarm runs, merged when separated by fewer than 3 non-alarm days.
+Calibration also caps the share of alarm days among eligible days at 5 percent
+(`alarm.max_alarm_day_share`): without it a persistent score such as a volatility percentile meets
+an episode budget with one months-long alarm. Alarm episodes: maximal alarm runs, merged when separated by fewer than 3 non-alarm days.
 
 ## Metrics
 Event recall, per-event detection delay (trading days from onset to the first alarm in the

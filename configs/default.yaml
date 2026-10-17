@@ -6,7 +6,7 @@ paths:
   results: results
   events: data/events.yaml
 data:
-  start: "2000-01-01"
+  start: "1999-01-01"
   max_ffill_days: 3
   bundesbank_base: "https://api.statistiken.bundesbank.de/rest"
   ecb_base: "https://data-api.ecb.europa.eu/service/data"
@@ -23,6 +23,7 @@ splits:
 alarm:
   budget_per_year: 3.0
   merge_gap_days: 3
+  max_alarm_day_share: 0.05   # cap on alarm days among eligible calibration days
 features:
   vol_windows: [5, 20, 60]
   z_window: 252

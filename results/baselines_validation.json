@@ -1,0 +1,70 @@
+{
+  "rule_return": {
+    "threshold": 3.5646142370280205,
+    "validation": {
+      "n_events": 3,
+      "n_detected": 2,
+      "event_recall": 0.6666666666666666,
+      "false_alarm_episodes": 10,
+      "eligible_years": 3.619047619047619,
+      "false_alarm_rate": 2.763157894736842,
+      "events": [
+        {
+          "event": "snb_floor_2015",
+          "onset": "2015-01-15",
+          "detected": false,
+          "delay_days": null
+        },
+        {
+          "event": "china_aug2015",
+          "onset": "2015-08-24",
+          "detected": true,
+          "delay_days": 0
+        },
+        {
+          "event": "brexit_2016",
+          "onset": "2016-06-24",
+          "detected": true,
+          "delay_days": 0
+        }
+      ],
+      "average_precision": 0.11828199308760623,
+      "roc_auc": 0.6761807679238873,
+      "score_separation": 0.633258174066966
+    }
+  },
+  "rule_vol": {
+    "threshold": 0.9656084656084656,
+    "validation": {
+      "n_events": 3,
+      "n_detected": 3,
+      "event_recall": 1.0,
+      "false_alarm_episodes": 6,
+      "eligible_years": 3.619047619047619,
+      "false_alarm_rate": 1.6578947368421053,
+      "events": [
+        {
+          "event": "snb_floor_2015",
+          "onset": "2015-01-15",
+          "detected": true,
+          "delay_days": -2
+        },
+        {
+          "event": "china_aug2015",
+          "onset": "2015-08-24",
+          "detected": true,
+          "delay_days": 0
+        },
+        {
+          "event": "brexit_2016",
+          "onset": "2016-06-24",
+          "detected": true,
+          "delay_days": 0
+        }
+      ],
+      "average_precision": 0.46398956342648445,
+      "roc_auc": 0.959751953788651,
+      "score_separation": 2.434526880467041
+    }
+  }
+}

@@ -1,11 +1,11 @@
 {
-  "rows": 6804,
-  "date_min": "2000-01-03",
+  "rows": 7057,
+  "date_min": "1999-01-04",
   "date_max": "2026-10-16",
   "duplicate_dates": 0,
   "series": {
     "dax_close": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
@@ -18,10 +18,10 @@
       "implausible_values": 0,
       "longest_missing_run_days": 0,
       "outliers_8_robust_sd": 7,
-      "largest_abs_robust_z": 13.34
+      "largest_abs_robust_z": 13.24
     },
     "usd_per_eur": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
@@ -35,10 +35,10 @@
       "forward_fill_share": 0.0,
       "longest_missing_run_days": 0,
       "outliers_8_robust_sd": 4,
-      "largest_abs_robust_z": 10.14
+      "largest_abs_robust_z": 10.1
     },
     "chf_per_eur": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
@@ -51,11 +51,11 @@
       "implausible_values": 0,
       "forward_fill_share": 0.0,
       "longest_missing_run_days": 0,
-      "outliers_8_robust_sd": 21,
-      "largest_abs_robust_z": 71.58
+      "outliers_8_robust_sd": 23,
+      "largest_abs_robust_z": 73.17
     },
     "gbp_per_eur": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
@@ -69,10 +69,10 @@
       "forward_fill_share": 0.0,
       "longest_missing_run_days": 0,
       "outliers_8_robust_sd": 4,
-      "largest_abs_robust_z": 14.21
+      "largest_abs_robust_z": 14.14
     },
     "jpy_per_eur": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
@@ -85,11 +85,11 @@
       "implausible_values": 0,
       "forward_fill_share": 0.0,
       "longest_missing_run_days": 0,
-      "outliers_8_robust_sd": 4,
-      "largest_abs_robust_z": 11.57
+      "outliers_8_robust_sd": 5,
+      "largest_abs_robust_z": 11.39
     },
     "de_yield_2y": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
@@ -106,7 +106,7 @@
       "largest_abs_robust_z": 12.14
     },
     "de_yield_10y": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
@@ -123,7 +123,7 @@
       "largest_abs_robust_z": 6.97
     },
     "ecb_mro": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 2112,
@@ -134,11 +134,11 @@
         6.0
       ],
       "implausible_values": 0,
-      "forward_fill_share": 0.31041,
+      "forward_fill_share": 0.29928,
       "longest_missing_run_days": 0
     },
     "ecb_dfr": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
@@ -153,7 +153,7 @@
       "longest_missing_run_days": 0
     },
     "ecb_mlf": {
-      "first_valid": "2000-01-03",
+      "first_valid": "1999-01-04",
       "missing": 0,
       "missing_share": 0.0,
       "forward_filled_days": 0,
