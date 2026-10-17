@@ -1,0 +1,124 @@
+# Curated, real stress events. Onset = first trading day of the market reaction (see justification).
+# Sources were retrieved on the access date. Frozen by `finanomaly events-freeze`.
+access_date: "2026-10-17"
+events:
+  - id: sept11_2001
+    name: "September 11 attacks"
+    category: systemic
+    onset: "2001-09-11"
+    sources:
+      - "https://money.cnn.com/2001/09/14/europe/markets_europe/"
+      - "https://money.cnn.com/2001/09/17/europe/markets_europe/"
+    justification: "Attacks on 11 Sep; the DAX fell 8.9 percent that day in the dataset and a further 5.5 percent on 14 Sep per CNN."
+  - id: worldcom_2002
+    name: "WorldCom bankruptcy and the July 2002 sell-off"
+    category: equity
+    onset: "2002-07-22"
+    sources:
+      - "https://www.upi.com/Business_News/2002/07/22/Stocks-fall-sharply/99731027354751/"
+      - "https://www.bis.org/publ/qtrpdf/r_qt0209ger_a.pdf"
+    justification: "WorldCom Chapter 11 filing on 21 Jul 2002 (Sunday); the DAX fell sharply on 22 Jul (UPI, midday 5.06 percent down); part of the 2002 market lows."
+  - id: lehman_2008
+    name: "Lehman Brothers bankruptcy"
+    category: systemic
+    onset: "2008-09-15"
+    sources:
+      - "https://www.nber.org/papers/w22410.pdf"
+      - "https://www.history.com/this-day-in-history/lehman-brothers-collapses"
+    justification: "Chapter 11 petition filed 15 Sep 2008; widely seen as a turning point of the financial crisis."
+  - id: crash_oct2008
+    name: "October 2008 global equity crash"
+    category: equity
+    onset: "2008-10-06"
+    sources:
+      - "https://www.thelocal.de/20081006/14719"
+      - "https://www.t-online.de/finanzen/ratgeber/geldanlage/boerse/id_100670460/dax-stuerzt-ab-dunkelste-tage-des-deutschen-leitindex-im-rueckblick.html"
+    justification: "DAX plunged nearly 6 percent at midday on 6 Oct 2008 (The Local); the dataset shows a 7.3 percent close-to-close fall and 19 percent over 10 days. Windows overlap with the Lehman detection window."
+  - id: flash_crash_2010
+    name: "Flash crash and May 2010 euro area stress"
+    category: equity
+    onset: "2010-05-06"
+    sources:
+      - "https://www.csmonitor.com/Money/2010/0519/SEC-unveils-flash-crash-fixes-but-Dow-plunge-still-mysterious"
+      - "https://www.planadviser.com/regulators-release-flash-crash-probe-report/"
+    justification: "US flash crash on 6 May 2010 (SEC/CFTC reports). The DAX close fell only 0.8 percent that day; the dataset shows a 3.3 percent fall within the 10 day window. Weak daily-data evidence, kept for completeness."
+  - id: aug2011_selloff
+    name: "August 2011 US downgrade and euro crisis sell-off"
+    category: systemic
+    onset: "2011-08-08"
+    sources:
+      - "https://en.wikipedia.org/wiki/August_2011_stock_markets_fall"
+      - "https://www.wbur.org/news/2011/08/08/stocks-tumble-downgrade"
+    justification: "S&P downgraded the US on 5 Aug 2011 after the close; first trading day reaction on 8 Aug; dataset DAX fall 5.1 percent."
+  - id: snb_floor_2015
+    name: "SNB removes the EUR/CHF floor"
+    category: fx
+    onset: "2015-01-15"
+    sources:
+      - "https://www.bis.org/review/r150116a.htm"
+      - "https://www.ft.lk/Financial-Services/switzerland-ends-euro-minimum-exchange-rate-cuts-interest-rate/42-382312"
+    justification: "SNB discontinued the 1.20 minimum rate on 15 Jan 2015; the dataset shows a 15.6 percent log move in CHF per EUR that day. The DAX itself rose."
+  - id: china_aug2015
+    name: "China devaluation sell-off"
+    category: equity
+    onset: "2015-08-24"
+    sources:
+      - "https://www.cityam.com/ftse-edges-towards-6000-after-china-shock/"
+      - "https://fortune.com/2015/08/24/dow-plunges-1000-points-stocks-markets"
+    justification: "Shanghai Composite fell 8.5 percent on 24 Aug 2015; DAX fell about 4.5 percent (City AM), 4.8 percent in the dataset."
+  - id: brexit_2016
+    name: "Brexit referendum result"
+    category: systemic
+    onset: "2016-06-24"
+    sources:
+      - "https://www.nbcnews.com/storyline/brexit-referendum/brexit-prospect-sends-pound-35-year-low-pummeling-markets-n598096"
+      - "https://www.ii.co.uk/analysis-commentary/stockmarkets-and-pound-plunge-black-friday-britain-votes-brexit-ii331341"
+    justification: "Leave vote result on 24 Jun 2016; pound at a 31 year low; dataset DAX fall 7.1 percent."
+  - id: covid_crash_2020
+    name: "COVID-19 crash"
+    category: systemic
+    onset: "2020-02-24"
+    sources:
+      - "https://www.cnbc.com/2020/02/24/european-markets-focus-on-coronavirus-spread-in-italy.html"
+      - "https://fox6now.com/2020/03/12/global-shares-sink-on-pandemic-news-waning-hopes-for-fix/"
+    justification: "European sell-off on 24 Feb 2020 after the Italian outbreak, followed by the WHO pandemic declaration on 11 Mar; dataset DAX fall 4.1 percent on onset and 16 percent over 10 days."
+  - id: ukraine_invasion_2022
+    name: "Russian invasion of Ukraine"
+    category: systemic
+    onset: "2022-02-24"
+    sources:
+      - "https://www.business-standard.com/amp/article/international/european-stocks-in-correction-territory-after-russia-attacks-ukraine-122022400743_1.html"
+      - "https://gna.org.gh/2022/02/world-markets-dive-oil-soars-as-russia-invades-ukraine/"
+    justification: "Invasion on 24 Feb 2022; DAX fell 3.7 percent per the cited report, 4.0 percent in the dataset."
+  - id: ecb_hike_2022
+    name: "First ECB rate hike of the 2022 cycle"
+    category: rates
+    onset: "2022-07-21"
+    sources:
+      - "https://www.fxstreet.com/amp/news/breaking-ecb-hikes-key-rates-by-50-basis-points-in-july-202207211216"
+      - "https://schulung.table.media/en/europe/news/ecb-raises-interest-rates-surprisingly-sharply"
+    justification: "ECB raised key rates by 50 bp on 21 Jul 2022, larger than the 25 bp expected, ending negative rates (effective 27 Jul; the dataset deposit rate moves from -0.5 to 0.0 on 27 Jul). Equity impact on the day was small."
+  - id: svb_credit_suisse_2023
+    name: "Silicon Valley Bank failure and Credit Suisse turmoil"
+    category: systemic
+    onset: "2023-03-10"
+    sources:
+      - "https://www.euronews.com/2023/03/15/european-banks-plunge-in-the-stock-market-dragged-down-by-credit-suisse"
+      - "https://www.kitco.com/news/off-the-wire/2023-03-15/credit-suisse-leads-europe-bank-stock-rout-after-short-lived-svb"
+    justification: "SVB collapsed on 10 Mar 2023; DAX fell about 3 percent on 15 Mar as Credit Suisse slid. The detection window contains both."
+  - id: carry_unwind_2024
+    name: "August 2024 yen carry trade unwind sell-off"
+    category: fx
+    onset: "2024-08-05"
+    sources:
+      - "https://www.nbcnewyork.com/news/business/money-report/investors-are-unwinding-the-biggest-carry-trade-the-world-has-ever-seen-socgen-strategist-says/5671777/"
+      - "https://www.atalayar.com/en/articulo/economy-and-business/uncertainty-over-the-us-economy-and-the-yen-to-blame-for-global-stock-markets-black-monday/20240806111804203876.html"
+    justification: "Global sell-off on 5 Aug 2024 (Nikkei -12.4 percent). DAX fell 1.8 percent in the dataset, a mild event for German data."
+  - id: tariff_shock_2025
+    name: "April 2025 tariff shock"
+    category: systemic
+    onset: "2025-04-03"
+    sources:
+      - "https://stock3.com/news/liberation-day-handelsaengste-belasten-den-dax-16258502"
+      - "https://www.pennmutualam.com/market-insights/blogs/monday-morning-perspectives/2025-04-07-markets-likely-to-continue-to-reel-from-liberation-day-tariffs"
+    justification: "Tariffs announced after the European close on 2 Apr 2025; first DAX reaction on 3 Apr (onset set to that day). Dataset DAX fall 3.1 percent, 5.1 percent minimum within 10 days."

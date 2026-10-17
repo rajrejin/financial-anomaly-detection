@@ -1,0 +1,34 @@
+# Seven fixed configurations per family. Written before any experiment run.
+seeds_final: [0, 1, 2, 3, 4]
+isolation_forest:
+  - {n_estimators: 100, max_samples: 256, max_features: 1.0}
+  - {n_estimators: 200, max_samples: 256, max_features: 1.0}
+  - {n_estimators: 300, max_samples: 512, max_features: 1.0}
+  - {n_estimators: 200, max_samples: 512, max_features: 0.7}
+  - {n_estimators: 300, max_samples: 1024, max_features: 0.7}
+  - {n_estimators: 500, max_samples: 256, max_features: 0.5}
+  - {n_estimators: 200, max_samples: 2048, max_features: 0.5}
+autoencoder:
+  - {hidden: [32], bottleneck: 8, dropout: 0.0, weight_decay: 0.0001, lr: 0.001}
+  - {hidden: [64, 32], bottleneck: 8, dropout: 0.0, weight_decay: 0.0001, lr: 0.001}
+  - {hidden: [64, 32], bottleneck: 4, dropout: 0.0, weight_decay: 0.0001, lr: 0.001}
+  - {hidden: [64, 32], bottleneck: 4, dropout: 0.1, weight_decay: 0.0001, lr: 0.001}
+  - {hidden: [128, 64], bottleneck: 6, dropout: 0.2, weight_decay: 0.001, lr: 0.001}
+  - {hidden: [32], bottleneck: 4, dropout: 0.1, weight_decay: 0.001, lr: 0.002}
+  - {hidden: [64, 32], bottleneck: 12, dropout: 0.0, weight_decay: 0.0001, lr: 0.001}
+lightgbm:
+  - {num_leaves: 7, learning_rate: 0.05, min_child_samples: 20, feature_fraction: 1.0, reg_lambda: 0.0}
+  - {num_leaves: 15, learning_rate: 0.05, min_child_samples: 20, feature_fraction: 1.0, reg_lambda: 0.0}
+  - {num_leaves: 4, learning_rate: 0.03, min_child_samples: 40, feature_fraction: 0.8, reg_lambda: 0.0}
+  - {num_leaves: 7, learning_rate: 0.1, min_child_samples: 10, feature_fraction: 0.8, reg_lambda: 1.0}
+  - {num_leaves: 15, learning_rate: 0.03, min_child_samples: 40, feature_fraction: 0.6, reg_lambda: 5.0}
+  - {num_leaves: 31, learning_rate: 0.05, min_child_samples: 20, feature_fraction: 0.8, reg_lambda: 1.0}
+  - {num_leaves: 3, learning_rate: 0.05, min_child_samples: 60, feature_fraction: 0.6, reg_lambda: 10.0}
+xgboost:
+  - {max_depth: 2, learning_rate: 0.05, min_child_weight: 1, colsample_bytree: 1.0, reg_lambda: 1.0}
+  - {max_depth: 3, learning_rate: 0.05, min_child_weight: 1, colsample_bytree: 1.0, reg_lambda: 1.0}
+  - {max_depth: 2, learning_rate: 0.03, min_child_weight: 3, colsample_bytree: 0.8, reg_lambda: 1.0}
+  - {max_depth: 3, learning_rate: 0.1, min_child_weight: 1, colsample_bytree: 0.8, reg_lambda: 2.0}
+  - {max_depth: 4, learning_rate: 0.03, min_child_weight: 3, colsample_bytree: 0.6, reg_lambda: 5.0}
+  - {max_depth: 5, learning_rate: 0.05, min_child_weight: 1, colsample_bytree: 0.8, reg_lambda: 2.0}
+  - {max_depth: 1, learning_rate: 0.05, min_child_weight: 5, colsample_bytree: 0.6, reg_lambda: 10.0}

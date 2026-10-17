@@ -1,0 +1,171 @@
+{
+  "rows": 6804,
+  "date_min": "2000-01-03",
+  "date_max": "2026-10-16",
+  "duplicate_dates": 0,
+  "series": {
+    "dax_close": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": 2202.9599609375,
+      "max": 26569.990234375,
+      "plausible_range": [
+        1000.0,
+        60000.0
+      ],
+      "implausible_values": 0,
+      "longest_missing_run_days": 0,
+      "outliers_8_robust_sd": 7,
+      "largest_abs_robust_z": 13.34
+    },
+    "usd_per_eur": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": 0.8252,
+      "max": 1.599,
+      "plausible_range": [
+        0.5,
+        2.0
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.0,
+      "longest_missing_run_days": 0,
+      "outliers_8_robust_sd": 4,
+      "largest_abs_robust_z": 10.14
+    },
+    "chf_per_eur": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": 0.9008,
+      "max": 1.6803,
+      "plausible_range": [
+        0.8,
+        2.0
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.0,
+      "longest_missing_run_days": 0,
+      "outliers_8_robust_sd": 21,
+      "largest_abs_robust_z": 71.58
+    },
+    "gbp_per_eur": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": 0.5711,
+      "max": 0.97855,
+      "plausible_range": [
+        0.4,
+        1.2
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.0,
+      "longest_missing_run_days": 0,
+      "outliers_8_robust_sd": 4,
+      "largest_abs_robust_z": 14.21
+    },
+    "jpy_per_eur": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": 89.3,
+      "max": 187.72,
+      "plausible_range": [
+        80.0,
+        250.0
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.0,
+      "longest_missing_run_days": 0,
+      "outliers_8_robust_sd": 4,
+      "largest_abs_robust_z": 11.57
+    },
+    "de_yield_2y": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": -1.02,
+      "max": 5.32,
+      "plausible_range": [
+        -1.5,
+        8.0
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.0,
+      "longest_missing_run_days": 0,
+      "outliers_8_robust_sd": 11,
+      "largest_abs_robust_z": 12.14
+    },
+    "de_yield_10y": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": -0.85,
+      "max": 5.79,
+      "plausible_range": [
+        -1.5,
+        8.0
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.0,
+      "longest_missing_run_days": 0,
+      "outliers_8_robust_sd": 0,
+      "largest_abs_robust_z": 6.97
+    },
+    "ecb_mro": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 2112,
+      "min": 0.0,
+      "max": 4.5,
+      "plausible_range": [
+        0.0,
+        6.0
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.31041,
+      "longest_missing_run_days": 0
+    },
+    "ecb_dfr": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": -0.5,
+      "max": 4.0,
+      "plausible_range": [
+        -1.0,
+        6.0
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.0,
+      "longest_missing_run_days": 0
+    },
+    "ecb_mlf": {
+      "first_valid": "2000-01-03",
+      "missing": 0,
+      "missing_share": 0.0,
+      "forward_filled_days": 0,
+      "min": 0.25,
+      "max": 5.75,
+      "plausible_range": [
+        0.0,
+        7.0
+      ],
+      "implausible_values": 0,
+      "forward_fill_share": 0.0,
+      "longest_missing_run_days": 0
+    }
+  }
+}

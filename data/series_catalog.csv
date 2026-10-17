@@ -1,0 +1,11 @@
+name,source,flow,key,title,unit,frequency,first_date,last_date,n_obs,status
+usd_per_eur,Bundesbank,BBEX3,D.USD.EUR.BB.AC.000,Euro-Referenzkurs der EZB / 1 EUR = ... USD / Vereinigte Staaten,USD,daily,2000-01-03,2026-10-16,6857,ok
+chf_per_eur,Bundesbank,BBEX3,D.CHF.EUR.BB.AC.000,Euro-Referenzkurs der EZB / 1 EUR = ... CHF / Schweiz,CHF,daily,2000-01-03,2026-10-16,6857,ok
+gbp_per_eur,Bundesbank,BBEX3,D.GBP.EUR.BB.AC.000,Euro-Referenzkurs der EZB / 1 EUR = ... GBP / Vereinigtes KÃ¶nigreich,GBP,daily,2000-01-03,2026-10-16,6857,ok
+jpy_per_eur,Bundesbank,BBEX3,D.JPY.EUR.BB.AC.000,Euro-Referenzkurs der EZB / 1 EUR = ... JPY / Japan,JPY,daily,2000-01-03,2026-10-16,6857,ok
+de_yield_2y,Bundesbank,BBSIS,D.I.ZST.ZI.EUR.S1311.B.A604.R02XX.R.A.A._Z._Z.A,"Zinsstrukturkurve (Svensson-Methode) / BÃ¶rsennotierte             Bundeswertpapiere / 2,0 Jahr(e) RLZ / Tageswerte",Prozent,daily,2000-01-03,2026-10-16,6807,ok
+de_yield_10y,Bundesbank,BBSIS,D.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A,"Zinsstrukturkurve (Svensson-Methode) / BÃ¶rsennotierte             Bundeswertpapiere / 10,0 Jahr(e) RLZ / Tageswerte",Prozent,daily,2000-01-03,2026-10-16,6807,ok
+ecb_mro,ECB,FM,D.U2.EUR.4F.KR.MRR_FR.LEV,,percent,daily,2000-01-01,2026-10-17,6756,ok
+ecb_dfr,ECB,FM,D.U2.EUR.4F.KR.DFR.LEV,,percent,daily,2000-01-01,2026-10-17,9787,ok
+ecb_mlf,ECB,FM,D.U2.EUR.4F.KR.MLFR.LEV,,percent,daily,2000-01-01,2026-10-17,9787,ok
+dax_close,Yahoo Finance via yfinance,n/a,^GDAXI,"DAX performance index, daily close",index points,daily,2000-01-03,2026-10-16,6804,ok
