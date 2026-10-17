@@ -1,0 +1,271 @@
+{
+  "lightgbm": {
+    "max_additivity_gap": 1.7763568394002505e-15,
+    "spearman_shap_vs_gain": 0.8179104477611941,
+    "top_by_shap": [
+      "vol20",
+      "r_jpy",
+      "vol_ratio",
+      "corr60",
+      "d_y2"
+    ],
+    "top_by_gain": [
+      "vol20",
+      "r_jpy",
+      "d_spread",
+      "r_gbp",
+      "vol_ratio"
+    ],
+    "headline_days": {
+      "covid_crash_2020": {
+        "alarm_day": "2020-02-24",
+        "top_features": [
+          [
+            "vol20",
+            1.867293765927347
+          ],
+          [
+            "r_jpy",
+            0.20263190457938515
+          ],
+          [
+            "vol_ratio",
+            0.11248004547444669
+          ]
+        ]
+      },
+      "ukraine_invasion_2022": {
+        "alarm_day": "2022-02-24",
+        "top_features": [
+          [
+            "vol20",
+            1.804467781978594
+          ],
+          [
+            "d_y2",
+            0.18032447171965496
+          ],
+          [
+            "r_chf",
+            0.11132617169899693
+          ]
+        ]
+      },
+      "ecb_hike_2022": {
+        "alarm_day": "2022-07-21",
+        "top_features": [
+          [
+            "vol20",
+            -0.5057227626323855
+          ],
+          [
+            "vol_ratio",
+            0.05526390194528414
+          ],
+          [
+            "corr60",
+            -0.043258304295191286
+          ]
+        ]
+      }
+    }
+  },
+  "xgboost": {
+    "max_additivity_gap": 3.337860107421875e-06,
+    "spearman_shap_vs_gain": 0.44117647058823534,
+    "top_by_shap": [
+      "vol20",
+      "vol_ratio",
+      "corr60",
+      "vol60",
+      "r_chf"
+    ],
+    "top_by_gain": [
+      "vol20",
+      "vol5",
+      "r_jpy",
+      "policy_rate",
+      "d_y2"
+    ],
+    "headline_days": {
+      "covid_crash_2020": {
+        "alarm_day": "2020-02-20",
+        "top_features": [
+          [
+            "vol20",
+            -1.1046991348266602
+          ],
+          [
+            "corr60",
+            0.30211976170539856
+          ],
+          [
+            "vol_ratio",
+            -0.2966173589229584
+          ]
+        ]
+      },
+      "ukraine_invasion_2022": {
+        "alarm_day": "2022-02-25",
+        "top_features": [
+          [
+            "vol20",
+            1.8384418487548828
+          ],
+          [
+            "vol60",
+            -1.2794175148010254
+          ],
+          [
+            "corr60",
+            -0.9495815634727478
+          ]
+        ]
+      },
+      "ecb_hike_2022": {
+        "alarm_day": "2022-07-22",
+        "top_features": [
+          [
+            "vol20",
+            -1.9519344568252563
+          ],
+          [
+            "d_y2",
+            1.8837136030197144
+          ],
+          [
+            "corr60",
+            -1.0760183334350586
+          ]
+        ]
+      }
+    },
+    "config_idx": 1
+  },
+  "autoencoder": {
+    "covid_crash_2020": {
+      "alarm_day": "2020-03-09",
+      "top_shares": [
+        [
+          "r_jpy",
+          0.2057199627161026
+        ],
+        [
+          "vol5",
+          0.18414291739463806
+        ],
+        [
+          "drawdown",
+          0.1367596983909607
+        ]
+      ],
+      "shares_sum": 1.0
+    },
+    "ukraine_invasion_2022": {
+      "alarm_day": "2022-02-24",
+      "top_shares": [
+        [
+          "r_usd",
+          0.5240118503570557
+        ],
+        [
+          "corr60",
+          0.15084689855575562
+        ],
+        [
+          "r_chf",
+          0.08403170108795166
+        ]
+      ],
+      "shares_sum": 1.0
+    },
+    "ecb_hike_2022": {
+      "alarm_day": "2022-07-27",
+      "top_shares": [
+        [
+          "d_policy",
+          0.8020365834236145
+        ],
+        [
+          "r_usd",
+          0.04280690848827362
+        ],
+        [
+          "vol_ratio",
+          0.04130694642663002
+        ]
+      ],
+      "shares_sum": 1.0
+    }
+  },
+  "isolation_forest": {
+    "base_test_ap": 0.21650715709793147,
+    "features": {
+      "r_dax": {
+        "ap_drop_mean": 0.008681392955539496,
+        "ap_drop_std": 0.003804898090769918
+      },
+      "r_usd": {
+        "ap_drop_mean": 0.0004012836053561175,
+        "ap_drop_std": 0.0027867386918594317
+      },
+      "r_chf": {
+        "ap_drop_mean": 0.0012492616409694735,
+        "ap_drop_std": 0.0011069338013256667
+      },
+      "r_gbp": {
+        "ap_drop_mean": 0.006609648636155985,
+        "ap_drop_std": 0.0022709744535044877
+      },
+      "r_jpy": {
+        "ap_drop_mean": 0.004662998991182105,
+        "ap_drop_std": 0.0016397230150781343
+      },
+      "d_y2": {
+        "ap_drop_mean": 0.003231797330612446,
+        "ap_drop_std": 0.0073481192945154105
+      },
+      "d_y10": {
+        "ap_drop_mean": 0.0052500131161547,
+        "ap_drop_std": 0.002938569433680828
+      },
+      "d_spread": {
+        "ap_drop_mean": -0.0027145984400136825,
+        "ap_drop_std": 0.0029412601288098666
+      },
+      "policy_rate": {
+        "ap_drop_mean": 0.010072510623287373,
+        "ap_drop_std": 0.0016290377746333736
+      },
+      "d_policy": {
+        "ap_drop_mean": 0.0019109358429813482,
+        "ap_drop_std": 0.0015274674569029825
+      },
+      "vol5": {
+        "ap_drop_mean": 0.011606855298574081,
+        "ap_drop_std": 0.006688629071370361
+      },
+      "vol20": {
+        "ap_drop_mean": -0.01809802952308724,
+        "ap_drop_std": 0.0030097990863822634
+      },
+      "vol60": {
+        "ap_drop_mean": -0.03768116626614494,
+        "ap_drop_std": 0.006166651375256219
+      },
+      "vol_ratio": {
+        "ap_drop_mean": 0.013923612363467919,
+        "ap_drop_std": 0.0017553344204520199
+      },
+      "drawdown": {
+        "ap_drop_mean": 0.007183519007974343,
+        "ap_drop_std": 0.0038596925776093493
+      },
+      "corr60": {
+        "ap_drop_mean": 0.007486689746788877,
+        "ap_drop_std": 0.002044524255255726
+      }
+    }
+  },
+  "note": "Explanations describe model behaviour, not the causes of market moves. SHAP values are in the margin (log-odds) space of the tree model before Platt calibration."
+}

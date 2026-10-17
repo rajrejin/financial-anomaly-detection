@@ -164,3 +164,18 @@ def review() -> None:
     from finanomaly.evaluation.review import write_review
 
     typer.echo(write_review(get_config())[:600])
+
+
+@app.command()
+def explain() -> None:
+    """SHAP, reconstruction shares and permutation sensitivity (results/explain)."""
+    from finanomaly.config import get_config
+    from finanomaly.context import load_context
+    from finanomaly.explain.report import run_explainability
+
+    rep = run_explainability(load_context(get_config()))
+    for k in ("lightgbm", "xgboost"):
+        typer.echo(
+            f"{k}: additivity gap {rep[k]['max_additivity_gap']:.2e}, "
+            f"rho(shap,gain)={rep[k]['spearman_shap_vs_gain']:.2f}"
+        )
