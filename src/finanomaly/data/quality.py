@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 
 import numpy as np
+import pandas as pd
 
 from finanomaly.config import Config
 from finanomaly.data.build import load_dataset
@@ -23,8 +24,8 @@ PLAUSIBLE = {
 }
 
 
-def run_quality(cfg: Config) -> dict:
-    t = load_dataset(cfg)
+def run_quality(cfg: Config, table: pd.DataFrame | None = None, write: bool = True) -> dict:
+    t = table if table is not None else load_dataset(cfg)
     report: dict = {
         "rows": len(t),
         "date_min": str(t.index.min().date()),
@@ -67,9 +68,10 @@ def run_quality(cfg: Config) -> dict:
             info["outliers_8_robust_sd"] = int((z.abs() > 8).sum())
             info["largest_abs_robust_z"] = round(float(z.abs().max()), 2)
         report["series"][c] = info
-    out = cfg.path("results") / "data_quality.json"
-    out.parent.mkdir(exist_ok=True)
-    out.write_text(json.dumps(report, indent=2))
+    if write:
+        out = cfg.path("results") / "data_quality.json"
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(json.dumps(report, indent=2))
     return report
 
 

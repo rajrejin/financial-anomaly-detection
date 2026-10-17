@@ -7,9 +7,11 @@ was found, the entry says so; no cause is asserted without a source.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pandas as pd
 
-from finanomaly.config import ROOT, Config
+from finanomaly.config import Config
 
 NOT_FOUND = "No sourced explanation found."
 
@@ -126,5 +128,5 @@ def write_review(cfg: Config, champion: str = "anomaly-isolation-forest", top: i
         f"event list for this model: {int((d.model == champion).sum())}.",
     ]
     text = "\n".join(lines) + "\n"
-    (ROOT / "docs" / "FALSE_ALARM_REVIEW.md").write_text(text, encoding="utf-8")
+    (Path(cfg.root) / "docs" / "FALSE_ALARM_REVIEW.md").write_text(text, encoding="utf-8")
     return text

@@ -27,13 +27,15 @@ def _get(url: str, params: dict[str, str]) -> httpx.Response:
     return r
 
 
-def fetch_cached(url: str, params: dict[str, str], cache_file: Path) -> bytes | None:
+def fetch_cached(
+    url: str, params: dict[str, str], cache_file: Path, force: bool = False
+) -> bytes | None:
     """Return response body (bytes), reading from the gzip cache when present.
 
     Returns None for 404 (no results). Raises for other errors.
     """
     cache_file.parent.mkdir(parents=True, exist_ok=True)
-    if cache_file.exists():
+    if cache_file.exists() and not force:
         return gzip.decompress(cache_file.read_bytes())
     log.info("fetching %s %s", url, params)
     r = _get(url, params)

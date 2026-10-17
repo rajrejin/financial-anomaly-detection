@@ -13,10 +13,10 @@ from finanomaly.config import Config
 log = logging.getLogger(__name__)
 
 
-def fetch_dax(cfg: Config) -> pd.DataFrame:
+def fetch_dax(cfg: Config, force: bool = False) -> pd.DataFrame:
     cache = cfg.path("raw") / "dax" / f"gdaxi_yfinance_from{cfg.data.start[:4]}.csv.gz"
     cache.parent.mkdir(parents=True, exist_ok=True)
-    if cache.exists():
+    if cache.exists() and not force:
         return _read(gzip.decompress(cache.read_bytes()))
     try:
         import yfinance as yf

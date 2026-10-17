@@ -89,8 +89,8 @@ def align_series(
     return full, filled.fillna(False).astype(bool)
 
 
-def build_dataset(cfg: Config) -> pd.DataFrame:
-    d = dax.fetch_dax(cfg)
+def build_dataset(cfg: Config, force: bool = False, write: bool = True) -> pd.DataFrame:
+    d = dax.fetch_dax(cfg, force=force)
     index = d.index
     table = pd.DataFrame(index=index)
     table["dax_close"] = d["Close"]
@@ -98,9 +98,9 @@ def build_dataset(cfg: Config) -> pd.DataFrame:
     table["dax_low"] = d["Low"]
     sources: dict[str, pd.DataFrame | None] = {}
     for name in bundesbank.SERIES:
-        sources[name] = bundesbank.fetch_series(cfg, name)
+        sources[name] = bundesbank.fetch_series(cfg, name, force=force)
     for name in ecb.SERIES:
-        sources[name] = ecb.fetch_series(cfg, name)
+        sources[name] = ecb.fetch_series(cfg, name, force=force)
     for name, df in sources.items():
         if df is None:
             log.warning("series %s missing", name)
@@ -110,9 +110,10 @@ def build_dataset(cfg: Config) -> pd.DataFrame:
         table[name] = vals
         table[f"{name}__ffill"] = filled
     table.index = pd.DatetimeIndex(table.index, tz="UTC", name="date")
-    out = cfg.path("processed")
-    out.mkdir(parents=True, exist_ok=True)
-    table.to_parquet(out / "daily.parquet")
+    if write:
+        out = cfg.path("processed")
+        out.mkdir(parents=True, exist_ok=True)
+        table.to_parquet(out / "daily.parquet")
     return table
 
 

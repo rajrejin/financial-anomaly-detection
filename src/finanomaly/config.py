@@ -66,6 +66,7 @@ class Serving(BaseModel):
 
 
 class Config(BaseModel):
+    root: str = str(ROOT)
     seed: int
     paths: Paths
     data: DataCfg
@@ -78,7 +79,7 @@ class Config(BaseModel):
 
     def path(self, name: str) -> Path:
         p = Path(getattr(self.paths, name))
-        return p if p.is_absolute() else ROOT / p
+        return p if p.is_absolute() else Path(self.root) / p
 
 
 def load_config(path: Path | None = None) -> Config:

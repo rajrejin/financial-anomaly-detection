@@ -179,3 +179,34 @@ def explain() -> None:
             f"{k}: additivity gap {rep[k]['max_additivity_gap']:.2e}, "
             f"rho(shap,gain)={rep[k]['spearman_shap_vs_gain']:.2f}"
         )
+
+
+@app.command("export-model")
+def export_model_cmd(out: str = typer.Option("", help="output directory")) -> None:
+    """Export the production-alias model to a self-contained directory."""
+    from pathlib import Path
+
+    from finanomaly.config import get_config
+    from finanomaly.serving.export import export_model
+
+    m = export_model(get_config(), Path(out) if out else None)
+    typer.echo({k: v for k, v in m.items() if k != "files"})
+
+
+@app.command("serve-api")
+def serve_api(host: str = "127.0.0.1", port: int = 8000) -> None:
+    """Run the FastAPI service (needs an exported model directory)."""
+    import uvicorn
+
+    from finanomaly.config import ROOT
+
+    uvicorn.run("api.main:app", host=host, port=port, app_dir=str(ROOT))
+
+
+@app.command()
+def refresh() -> None:
+    """Fetch the latest days, rebuild, run quality checks and publish only if they pass."""
+    from finanomaly.config import get_config
+    from finanomaly.data.refresh import refresh as do_refresh
+
+    typer.echo(do_refresh(get_config()))

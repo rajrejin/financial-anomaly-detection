@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -36,7 +37,8 @@ ES_YEARS = 5
 
 
 def load_experiments(path: Path | None = None) -> dict[str, Any]:
-    p = path or ROOT / "configs" / "experiments.yaml"
+    env = os.environ.get("FINANOMALY_EXPERIMENTS")
+    p = path or (Path(env) if env else ROOT / "configs" / "experiments.yaml")
     return yaml.safe_load(p.read_text(encoding="utf-8"))
 
 

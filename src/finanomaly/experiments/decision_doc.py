@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
-from finanomaly.config import ROOT, Config
+from finanomaly.config import Config
 
 CHECK_LABELS = {
     "recall_vs_reference": "Validation recall at least reference (production model or baseline)",
@@ -131,5 +132,5 @@ def write_decision_doc(cfg: Config) -> str:
     else:
         lines.append("Not yet evaluated.")
     text = "\n".join(lines) + "\n"
-    (ROOT / "docs" / "PROMOTION_DECISION.md").write_text(text, encoding="utf-8")
+    (Path(cfg.root) / "docs" / "PROMOTION_DECISION.md").write_text(text, encoding="utf-8")
     return text

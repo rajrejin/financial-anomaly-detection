@@ -30,7 +30,7 @@ log = logging.getLogger(__name__)
 def tracking_uri(cfg: Config) -> str:
     uri = cfg.mlflow.tracking_uri
     if uri.startswith("sqlite:///") and not uri.startswith("sqlite:////"):
-        return "sqlite:///" + (ROOT / uri[len("sqlite:///") :]).as_posix()
+        return "sqlite:///" + (Path(cfg.root) / uri[len("sqlite:///") :]).as_posix()
     return uri
 
 
@@ -45,7 +45,7 @@ def get_experiment(client: MlflowClient, cfg: Config, name: str) -> str:
     exp = client.get_experiment_by_name(name)
     if exp is not None:
         return exp.experiment_id
-    art = (ROOT / cfg.mlflow.artifact_root / name.replace("/", "_")).resolve().as_uri()
+    art = (Path(cfg.root) / cfg.mlflow.artifact_root / name.replace("/", "_")).resolve().as_uri()
     return client.create_experiment(name, artifact_location=art)
 
 
