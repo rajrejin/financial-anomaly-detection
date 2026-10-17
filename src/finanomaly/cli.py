@@ -85,3 +85,22 @@ def baselines() -> None:
             f"{k}: thr={v['threshold']:.3f} recall={r['event_recall']} "
             f"fa_rate={r['false_alarm_rate']:.2f} ap={r['average_precision']}"
         )
+
+
+@app.command()
+def experiment(
+    family: str = typer.Option(..., help="isolation_forest|autoencoder|lightgbm|xgboost|all"),
+    seed: int = typer.Option(0),
+) -> None:
+    """Run all 7 configurations of a family (resumable) and refresh results/runs_summary.csv."""
+    from finanomaly.config import get_config
+    from finanomaly.context import load_context
+    from finanomaly.experiments.runner import FAMILIES
+    from finanomaly.experiments.summary import export_summary, run_family
+
+    cfg = get_config()
+    ctx = load_context(cfg)
+    fams = list(FAMILIES) if family == "all" else [family]
+    for f in fams:
+        typer.echo(run_family(ctx, f, seed))
+    typer.echo(f"{len(export_summary(cfg))} validation runs in results/runs_summary.csv")
