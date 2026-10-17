@@ -56,6 +56,7 @@ def project(tmp_path_factory):
     run_cli(["evaluate"])
     run_cli(["review"])
     run_cli(["explain"])
+    run_cli(["robustness", "--only", "crosscheck,walkforward"])
     export = root / "export"
     run_cli(["export-model", "--out", str(export)])
     yield SimpleNamespace(root=root, cfg=cfg, export=export, log=log)

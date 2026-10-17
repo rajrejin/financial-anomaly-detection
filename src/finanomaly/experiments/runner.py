@@ -62,11 +62,18 @@ def _training_rows(ctx: Context, cutoff: pd.Timestamp) -> np.ndarray:
 
 
 def fit_model(
-    ctx: Context, family: str, params: dict[str, Any], seed: int, cutoff: pd.Timestamp
+    ctx: Context,
+    family: str,
+    params: dict[str, Any],
+    seed: int,
+    cutoff: pd.Timestamp,
+    train_start: pd.Timestamp | None = None,
 ) -> tuple[AnomalyModel, np.ndarray]:
     """Fit on data strictly before `cutoff`. Returns (model, full-length scores, NaN if invalid)."""
     X = ctx.z.to_numpy(dtype=float)
     rows = _training_rows(ctx, cutoff)
+    if train_start is not None:
+        rows = rows & np.asarray(ctx.index.tz_localize(None) >= train_start)
     model = FAMILIES[family](**params)
     usable = [w for w in ctx.wins if w.event.onset < cutoff]
     if family in SUPERVISED:
@@ -75,6 +82,8 @@ def fit_model(
             y[w.label[0] : w.label[1]] = 1
         idx = ctx.index.tz_localize(None)
         es_start = cutoff - pd.DateOffset(years=ES_YEARS)
+        if train_start is not None and es_start <= train_start:
+            es_start = train_start + (cutoff - train_start) / 2  # shorter training period
         tr = rows & np.asarray(idx < es_start)
         es = rows & np.asarray(idx >= es_start)
         model.fit(X[tr], y[tr], seed=seed, X_es=X[es], y_es=y[es])
@@ -115,10 +124,15 @@ def calibration_metrics(ctx: Context, scores: np.ndarray, seg: tuple[int, int]) 
 
 
 def run_val_stage(
-    ctx: Context, family: str, config_idx: int, params: dict[str, Any], seed: int
+    ctx: Context,
+    family: str,
+    config_idx: int,
+    params: dict[str, Any],
+    seed: int,
+    train_start: pd.Timestamp | None = None,
 ) -> StageResult:
     cutoff = pd.Timestamp(ctx.cfg.splits.val_start)
-    model, scores = fit_model(ctx, family, params, seed, cutoff)
+    model, scores = fit_model(ctx, family, params, seed, cutoff, train_start)
     thr, res = calibrate_and_eval(ctx, scores, ctx.val_seg)
     extra: dict[str, Any] = {}
     if family in SUPERVISED:
@@ -135,11 +149,12 @@ def run_final_stage(
     params: dict[str, Any],
     seed: int,
     val_threshold: float | None,
+    train_start: pd.Timestamp | None = None,
 ) -> StageResult:
     """Refit on all pre-2019 data. Unsupervised thresholds are recalibrated on the 2015 to 2018
     non-event days; supervised models reuse the validation stage probability threshold."""
     cutoff = pd.Timestamp(ctx.cfg.splits.test_start)
-    model, scores = fit_model(ctx, family, params, seed, cutoff)
+    model, scores = fit_model(ctx, family, params, seed, cutoff, train_start)
     if family in SUPERVISED:
         assert val_threshold is not None
         thr = val_threshold

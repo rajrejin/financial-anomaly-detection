@@ -1,0 +1,40 @@
+{
+  "columns": [
+    "model",
+    "schedule",
+    "detected",
+    "test_fa_per_year",
+    "test_ap"
+  ],
+  "rows": [
+    {
+      "model": "isolation forest",
+      "schedule": "fixed (fit before 2019)",
+      "detected": "6 of 6",
+      "test_fa_per_year": "4.24",
+      "test_ap": "0.217"
+    },
+    {
+      "model": "isolation forest",
+      "schedule": "walk-forward, annual refit",
+      "detected": "6 of 6",
+      "test_fa_per_year": "4.52",
+      "test_ap": "0.196"
+    },
+    {
+      "model": "autoencoder",
+      "schedule": "fixed (fit before 2019)",
+      "detected": "5 of 6",
+      "test_fa_per_year": "4.10",
+      "test_ap": "0.115"
+    },
+    {
+      "model": "autoencoder",
+      "schedule": "walk-forward, annual refit",
+      "detected": "3 of 6",
+      "test_fa_per_year": "4.10",
+      "test_ap": "0.089"
+    }
+  ],
+  "note": "Walk-forward: before each test year the model is refit on all earlier data and its threshold recalibrated on the previous four years (non-event days, same budget). The fixed schedule used for promotion is shown for comparison; it was not changed."
+}

@@ -34,7 +34,9 @@ def evaluate_segment(
     in_seg = np.zeros(n, dtype=bool)
     in_seg[seg[0] : seg[1]] = True
     valid = in_seg & ~np.isnan(scores)
+    seg_valid = int(valid.sum())
     out: dict = {
+        "alarm_day_share": float((alarm & valid).sum()) / max(seg_valid, 1),
         "n_events": len(events),
         "n_detected": int(sum(e["detected"] for e in events)),
         "event_recall": (sum(e["detected"] for e in events) / len(events)) if events else None,

@@ -11,3 +11,14 @@ Each entry: decision, alternatives, reason.
 7. **Model inputs** are trailing 252 day median/MAD z-scores of the base features, shared by all families. Where MAD is zero (policy rate change) the window standard deviation is used, then 1.
 8. **Threshold for the supervised model**: in-sample probabilities of the refit model cannot be calibrated to a false alarm budget, so the validation-stage out-of-sample threshold is reused (documented in the protocol).
 9. **Line endings**: SHA-256 of text files normalises CRLF to LF so the freeze holds across platforms.
+10. **Data start 1999** (not 2000): features need 252 days for the drawdown plus 252 days for the trailing z-scores, so with a 2000 start the September 2001 event would have had no features. Splits still start in 2000; features are valid from 2000-12.
+11. **Unsupervised training excludes event windows** (detection windows and buffers of events with onset before the cut-off) so the models learn "normal" days. Alternative: train on all days. Reason: stress days are the object of detection.
+12. **Alarm day cap**: calibration also limits alarm days to 5 percent of eligible days (`alarm.max_alarm_day_share`). Without it a persistent score (volatility percentile) satisfies an episode budget with one months-long alarm. Written into the protocol before the experiments.
+13. **Registry uses aliases** (`staging`, `production`) plus a `lifecycle` tag, because MLflow 3.17 deprecates stages.
+14. **Seed study spread criterion** is the population standard deviation of validation event recall over 5 seeds, at most 0.2.
+15. **Gate uses the validation-stage fit** (data before 2015) because the deployed refit has no out-of-sample validation. The deployed model is the refit on all pre-2019 data.
+16. **Platt calibration** (not isotonic) for the tree models: few positive days in the early-stopping block make isotonic regression unstable.
+17. **Leave-one-event-out definition**: the held-out event is treated as ordinary data for unsupervised fitting and threshold calibration; LightGBM leaves its rows out and takes its threshold from out-of-fold probabilities (5 contiguous blocks). It is not chronological.
+18. **Alarm day share metric** was added to `evaluate_segment` after the main test evaluation had run, because a degenerate always-alarm model shows zero false alarm episodes. The main test numbers are unchanged; the shares for them are computed from the stored test scores (`results/alarm_share.json`).
+19. **Container**: Python 3.13 base to match the build interpreter; family-specific extras (torch, lightgbm, xgboost, shap) are installed only when the model needs them, which cuts the image from 1.89 GB to 1.06 GB.
+20. **Minikube not installed**: its winget installer needs administrator rights; the specification says to record the gap and validate the chart statically.

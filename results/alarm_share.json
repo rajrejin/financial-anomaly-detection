@@ -1,0 +1,47 @@
+{
+  "columns": [
+    "entry",
+    "alarm_days",
+    "share_of_test_days",
+    "episodes",
+    "mean_episode_days"
+  ],
+  "rows": [
+    {
+      "entry": "rule_return",
+      "alarm_days": 50,
+      "share_of_test_days": "2.5%",
+      "episodes": 26,
+      "mean_episode_days": "2.8"
+    },
+    {
+      "entry": "rule_vol",
+      "alarm_days": 97,
+      "share_of_test_days": "4.9%",
+      "episodes": 5,
+      "mean_episode_days": "19.8"
+    },
+    {
+      "entry": "anomaly-isolation-forest",
+      "alarm_days": 165,
+      "share_of_test_days": "8.3%",
+      "episodes": 40,
+      "mean_episode_days": "5.1"
+    },
+    {
+      "entry": "anomaly-autoencoder",
+      "alarm_days": 86,
+      "share_of_test_days": "4.3%",
+      "episodes": 42,
+      "mean_episode_days": "2.5"
+    },
+    {
+      "entry": "anomaly-lightgbm",
+      "alarm_days": 283,
+      "share_of_test_days": "14.3%",
+      "episodes": 18,
+      "mean_episode_days": "16.3"
+    }
+  ],
+  "note": "Alarm days in the test period at each entry's fixed threshold (read from the stored scores, no refit). The false alarm episode metric ignores episodes that overlap an event window, so the share of alarm days is reported alongside it."
+}

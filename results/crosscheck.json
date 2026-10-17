@@ -1,0 +1,93 @@
+{
+  "columns": [
+    "pair",
+    "spearman_test_days",
+    "episodes_a",
+    "episodes_b",
+    "a_overlapping_b",
+    "b_overlapping_a"
+  ],
+  "rows": [
+    {
+      "pair": "rule_return vs rule_vol",
+      "spearman_test_days": "0.27",
+      "episodes_a": 26,
+      "episodes_b": 5,
+      "a_overlapping_b": 6,
+      "b_overlapping_a": 3
+    },
+    {
+      "pair": "rule_return vs anomaly-isolation-forest",
+      "spearman_test_days": "0.35",
+      "episodes_a": 26,
+      "episodes_b": 40,
+      "a_overlapping_b": 17,
+      "b_overlapping_a": 12
+    },
+    {
+      "pair": "rule_return vs anomaly-autoencoder",
+      "spearman_test_days": "0.36",
+      "episodes_a": 26,
+      "episodes_b": 42,
+      "a_overlapping_b": 5,
+      "b_overlapping_a": 6
+    },
+    {
+      "pair": "rule_return vs anomaly-lightgbm",
+      "spearman_test_days": "0.29",
+      "episodes_a": 26,
+      "episodes_b": 18,
+      "a_overlapping_b": 17,
+      "b_overlapping_a": 6
+    },
+    {
+      "pair": "rule_vol vs anomaly-isolation-forest",
+      "spearman_test_days": "0.37",
+      "episodes_a": 5,
+      "episodes_b": 40,
+      "a_overlapping_b": 4,
+      "b_overlapping_a": 6
+    },
+    {
+      "pair": "rule_vol vs anomaly-autoencoder",
+      "spearman_test_days": "0.39",
+      "episodes_a": 5,
+      "episodes_b": 42,
+      "a_overlapping_b": 4,
+      "b_overlapping_a": 8
+    },
+    {
+      "pair": "rule_vol vs anomaly-lightgbm",
+      "spearman_test_days": "0.43",
+      "episodes_a": 5,
+      "episodes_b": 18,
+      "a_overlapping_b": 5,
+      "b_overlapping_a": 4
+    },
+    {
+      "pair": "anomaly-isolation-forest vs anomaly-autoencoder",
+      "spearman_test_days": "0.90",
+      "episodes_a": 40,
+      "episodes_b": 42,
+      "a_overlapping_b": 29,
+      "b_overlapping_a": 36
+    },
+    {
+      "pair": "anomaly-isolation-forest vs anomaly-lightgbm",
+      "spearman_test_days": "0.49",
+      "episodes_a": 40,
+      "episodes_b": 18,
+      "a_overlapping_b": 17,
+      "b_overlapping_a": 12
+    },
+    {
+      "pair": "anomaly-autoencoder vs anomaly-lightgbm",
+      "spearman_test_days": "0.39",
+      "episodes_a": 42,
+      "episodes_b": 18,
+      "a_overlapping_b": 18,
+      "b_overlapping_a": 9
+    }
+  ],
+  "note": "Rank correlation of daily scores in the test period and overlap of alarm episodes (episodes of A that overlap at least one episode of B), all alarms including those inside event windows."
+}

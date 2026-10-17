@@ -1,0 +1,158 @@
+{
+  "columns": [
+    "setting",
+    "model",
+    "val_recall",
+    "test_recall",
+    "test_fa_per_year",
+    "test_ap",
+    "test_alarm_days"
+  ],
+  "rows": [
+    {
+      "setting": "base",
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "test_recall": "1.000",
+      "test_fa_per_year": "4.24",
+      "test_ap": "0.217",
+      "test_alarm_days": "8.3%"
+    },
+    {
+      "setting": "base",
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "test_recall": "0.833",
+      "test_fa_per_year": "1.41",
+      "test_ap": "0.233",
+      "test_alarm_days": "14.3%"
+    },
+    {
+      "setting": "label window 5 days",
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "test_recall": "1.000",
+      "test_fa_per_year": "4.24",
+      "test_ap": "0.115",
+      "test_alarm_days": "8.3%"
+    },
+    {
+      "setting": "label window 5 days",
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "test_recall": "0.833",
+      "test_fa_per_year": "3.96",
+      "test_ap": "0.139",
+      "test_alarm_days": "5.9%"
+    },
+    {
+      "setting": "label window 20 days",
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "test_recall": "1.000",
+      "test_fa_per_year": "4.24",
+      "test_ap": "0.419",
+      "test_alarm_days": "8.3%"
+    },
+    {
+      "setting": "label window 20 days",
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "test_recall": "0.667",
+      "test_fa_per_year": "1.13",
+      "test_ap": "0.428",
+      "test_alarm_days": "15.2%"
+    },
+    {
+      "setting": "detection window after onset 10 days",
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "test_recall": "1.000",
+      "test_fa_per_year": "4.78",
+      "test_ap": "0.211",
+      "test_alarm_days": "9.2%"
+    },
+    {
+      "setting": "detection window after onset 10 days",
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "test_recall": "0.833",
+      "test_fa_per_year": "1.50",
+      "test_ap": "0.233",
+      "test_alarm_days": "14.3%"
+    },
+    {
+      "setting": "detection window after onset 40 days",
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "test_recall": "1.000",
+      "test_fa_per_year": "3.79",
+      "test_ap": "0.221",
+      "test_alarm_days": "8.9%"
+    },
+    {
+      "setting": "detection window after onset 40 days",
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "test_recall": "0.833",
+      "test_fa_per_year": "1.51",
+      "test_ap": "0.233",
+      "test_alarm_days": "14.3%"
+    },
+    {
+      "setting": "false alarm budget 1 per year",
+      "model": "isolation forest",
+      "val_recall": "0.667",
+      "test_recall": "0.667",
+      "test_fa_per_year": "0.85",
+      "test_ap": "0.217",
+      "test_alarm_days": "2.5%"
+    },
+    {
+      "setting": "false alarm budget 1 per year",
+      "model": "lightgbm",
+      "val_recall": "0.000",
+      "test_recall": "0.000",
+      "test_fa_per_year": "0.00",
+      "test_ap": "0.233",
+      "test_alarm_days": "0.0%"
+    },
+    {
+      "setting": "false alarm budget 6 per year",
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "test_recall": "1.000",
+      "test_fa_per_year": "5.51",
+      "test_ap": "0.217",
+      "test_alarm_days": "12.3%"
+    },
+    {
+      "setting": "false alarm budget 6 per year",
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "test_recall": "1.000",
+      "test_fa_per_year": "4.24",
+      "test_ap": "0.233",
+      "test_alarm_days": "19.5%"
+    },
+    {
+      "setting": "training start 2010",
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "test_recall": "1.000",
+      "test_fa_per_year": "4.80",
+      "test_ap": "0.225",
+      "test_alarm_days": "8.6%"
+    },
+    {
+      "setting": "training start 2010",
+      "model": "lightgbm",
+      "val_recall": "0.667",
+      "test_recall": "0.833",
+      "test_fa_per_year": "1.55",
+      "test_ap": "0.197",
+      "test_alarm_days": "15.7%"
+    }
+  ],
+  "note": "Labelled sensitivity analysis on the registered configurations (seed 0); nothing here was used to retune. Window changes alter labels, detection windows and buffers together. Test AP is on daily labels under the changed label window, so it is not comparable across label window settings. Only 3 validation and 6 test events."
+}

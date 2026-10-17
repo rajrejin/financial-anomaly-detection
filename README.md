@@ -230,6 +230,26 @@ Delay is in trading days from onset to the first alarm in the detection window.
 
 The per-event rows matter more than the aggregates because there are only six test events.
 
+What the numbers say, generated from `results/`:
+
+<!-- BEGIN:findings -->
+* rule_return: 4 of 6 test events detected, 2.83 false alarm episodes per year, 2.5% of test days in alarm (mean episode 2.8 days).
+* rule_vol: 2 of 6 test events detected, 0.42 false alarm episodes per year, 4.9% of test days in alarm (mean episode 19.8 days).
+* anomaly-isolation-forest: 6 of 6 test events detected, 4.24 false alarm episodes per year, 8.3% of test days in alarm (mean episode 5.1 days).
+* anomaly-autoencoder: 5 of 6 test events detected, 4.10 false alarm episodes per year, 4.3% of test days in alarm (mean episode 2.5 days).
+* anomaly-lightgbm: 5 of 6 test events detected, 1.41 false alarm episodes per year, 14.3% of test days in alarm (mean episode 16.3 days).
+* The budget used to set thresholds was 3 false alarm episodes per year. Exceeded in the test period by: anomaly-isolation-forest, anomaly-autoencoder.
+* The false alarm episode count ignores episodes that overlap an event window, so a model that alarms on many days can show few episodes; read it together with the share of alarm days.
+* Autoencoder test recall over 5 seeds: mean 0.900, spread 0.082.
+* Leave-one-event-out detections: rule_return 12 of 15, rule_vol 10 of 15, isolation_forest 15 of 15, autoencoder 11 of 15, lightgbm 14 of 15.
+* With a budget of 1 episode per year, isolation forest test recall is 0.667 (labelled sensitivity analysis, not used to retune).
+* With a budget of 1 episode per year, lightgbm test recall is 0.000 (labelled sensitivity analysis, not used to retune).
+* Walk-forward check, isolation forest, fixed (fit before 2019): 6 of 6 events, 4.24 false alarm episodes per year.
+* Walk-forward check, isolation forest, walk-forward, annual refit: 6 of 6 events, 4.52 false alarm episodes per year.
+* Walk-forward check, autoencoder, fixed (fit before 2019): 5 of 6 events, 4.10 false alarm episodes per year.
+* Walk-forward check, autoencoder, walk-forward, annual refit: 3 of 6 events, 4.10 false alarm episodes per year.
+<!-- END:findings -->
+
 ### Seed spread and configuration rank stability
 
 <!-- BEGIN:seeds -->
@@ -259,7 +279,112 @@ says where no source was found.
 ### Robustness and cross-checks
 
 <!-- BEGIN:extra -->
-Not yet run.
+### Leave-one-event-out
+
+| Held-out event | rule_return | rule_vol | isolation_forest | autoencoder | lightgbm |
+|---|---|---|---|---|---|
+| sept11_2001 | +0 | +0 | +0 | +0 | +0 |
+| worldcom_2002 | +5 | -2 | +1 | +1 | -2 |
+| lehman_2008 | +4 | +4 | +4 | +15 | +0 |
+| crash_oct2008 | +0 | -2 | +0 | +2 | -2 |
+| flash_crash_2010 | +2 | missed | +1 | missed | +2 |
+| aug2011_selloff | -2 | missed | -2 | missed | -1 |
+| snb_floor_2015 | missed | -2 | +6 | +4 | -1 |
+| china_aug2015 | +0 | +0 | +0 | missed | +1 |
+| brexit_2016 | +0 | +0 | +0 | +0 | +0 |
+| covid_crash_2020 | +0 | +0 | +4 | +11 | +0 |
+| ukraine_invasion_2022 | +0 | +9 | +0 | +3 | +1 |
+| ecb_hike_2022 | missed | missed | +4 | +4 | missed |
+| svb_credit_suisse_2023 | missed | missed | +1 | missed | +6 |
+| carry_unwind_2024 | -2 | missed | -1 | +0 | -2 |
+| tariff_shock_2025 | +0 | +1 | +0 | +1 | +0 |
+
+Each event is held out in turn: unsupervised models and rule thresholds are fit and calibrated with the event treated as ordinary data (budget 3 per year over the whole sample); LightGBM is trained on the other events' labels without the held-out rows, with its threshold from out-of-fold probabilities (5 time blocks). Not chronological, so later events inform earlier ones. Detected events per model: autoencoder 11 of 15, isolation_forest 15 of 15, lightgbm 14 of 15, rule_return 12 of 15, rule_vol 10 of 15.
+
+### Sensitivity to windows, budget and training start
+
+| setting | model | val_recall | test_recall | test_fa_per_year | test_ap | test_alarm_days |
+|---|---|---|---|---|---|---|
+| base | isolation forest | 1.000 | 1.000 | 4.24 | 0.217 | 8.3% |
+| base | lightgbm | 1.000 | 0.833 | 1.41 | 0.233 | 14.3% |
+| label window 5 days | isolation forest | 1.000 | 1.000 | 4.24 | 0.115 | 8.3% |
+| label window 5 days | lightgbm | 1.000 | 0.833 | 3.96 | 0.139 | 5.9% |
+| label window 20 days | isolation forest | 1.000 | 1.000 | 4.24 | 0.419 | 8.3% |
+| label window 20 days | lightgbm | 1.000 | 0.667 | 1.13 | 0.428 | 15.2% |
+| detection window after onset 10 days | isolation forest | 1.000 | 1.000 | 4.78 | 0.211 | 9.2% |
+| detection window after onset 10 days | lightgbm | 1.000 | 0.833 | 1.50 | 0.233 | 14.3% |
+| detection window after onset 40 days | isolation forest | 1.000 | 1.000 | 3.79 | 0.221 | 8.9% |
+| detection window after onset 40 days | lightgbm | 1.000 | 0.833 | 1.51 | 0.233 | 14.3% |
+| false alarm budget 1 per year | isolation forest | 0.667 | 0.667 | 0.85 | 0.217 | 2.5% |
+| false alarm budget 1 per year | lightgbm | 0.000 | 0.000 | 0.00 | 0.233 | 0.0% |
+| false alarm budget 6 per year | isolation forest | 1.000 | 1.000 | 5.51 | 0.217 | 12.3% |
+| false alarm budget 6 per year | lightgbm | 1.000 | 1.000 | 4.24 | 0.233 | 19.5% |
+| training start 2010 | isolation forest | 1.000 | 1.000 | 4.80 | 0.225 | 8.6% |
+| training start 2010 | lightgbm | 0.667 | 0.833 | 1.55 | 0.197 | 15.7% |
+
+Labelled sensitivity analysis on the registered configurations (seed 0); nothing here was used to retune. Window changes alter labels, detection windows and buffers together. Test AP is on daily labels under the changed label window, so it is not comparable across label window settings. Only 3 validation and 6 test events.
+
+### Cross-checks between models
+
+| pair | spearman_test_days | episodes_a | episodes_b | a_overlapping_b | b_overlapping_a |
+|---|---|---|---|---|---|
+| rule_return vs rule_vol | 0.27 | 26 | 5 | 6 | 3 |
+| rule_return vs anomaly-isolation-forest | 0.35 | 26 | 40 | 17 | 12 |
+| rule_return vs anomaly-autoencoder | 0.36 | 26 | 42 | 5 | 6 |
+| rule_return vs anomaly-lightgbm | 0.29 | 26 | 18 | 17 | 6 |
+| rule_vol vs anomaly-isolation-forest | 0.37 | 5 | 40 | 4 | 6 |
+| rule_vol vs anomaly-autoencoder | 0.39 | 5 | 42 | 4 | 8 |
+| rule_vol vs anomaly-lightgbm | 0.43 | 5 | 18 | 5 | 4 |
+| anomaly-isolation-forest vs anomaly-autoencoder | 0.90 | 40 | 42 | 29 | 36 |
+| anomaly-isolation-forest vs anomaly-lightgbm | 0.49 | 40 | 18 | 17 | 12 |
+| anomaly-autoencoder vs anomaly-lightgbm | 0.39 | 42 | 18 | 18 | 9 |
+
+Rank correlation of daily scores in the test period and overlap of alarm episodes (episodes of A that overlap at least one episode of B), all alarms including those inside event windows.
+
+### Share of alarm days in the test period
+
+| entry | alarm_days | share_of_test_days | episodes | mean_episode_days |
+|---|---|---|---|---|
+| rule_return | 50 | 2.5% | 26 | 2.8 |
+| rule_vol | 97 | 4.9% | 5 | 19.8 |
+| anomaly-isolation-forest | 165 | 8.3% | 40 | 5.1 |
+| anomaly-autoencoder | 86 | 4.3% | 42 | 2.5 |
+| anomaly-lightgbm | 283 | 14.3% | 18 | 16.3 |
+
+Alarm days in the test period at each entry's fixed threshold (read from the stored scores, no refit). The false alarm episode metric ignores episodes that overlap an event window, so the share of alarm days is reported alongside it.
+
+### Feature group ablation
+
+| features | n_features | model | val_recall | val_ap | test_recall | test_fa_per_year | test_ap | test_alarm_days |
+|---|---|---|---|---|---|---|---|---|
+| equity only | 6 | isolation forest | 0.667 | 0.277 | 0.833 | 2.26 | 0.155 | 10.2% |
+| equity only | 6 | autoencoder | 0.333 | 0.045 | 0.833 | 1.98 | 0.040 | 9.4% |
+| equity only | 6 | lightgbm | 1.000 | 0.204 | 0.667 | 1.84 | 0.204 | 7.4% |
+| equity + fx | 11 | isolation forest | 1.000 | 0.374 | 0.833 | 2.40 | 0.209 | 7.0% |
+| equity + fx | 11 | autoencoder | 1.000 | 0.379 | 0.667 | 5.09 | 0.123 | 5.7% |
+| equity + fx | 11 | lightgbm | 1.000 | 0.221 | 0.667 | 1.98 | 0.191 | 7.8% |
+| equity + rates | 11 | isolation forest | 1.000 | 0.192 | 1.000 | 4.66 | 0.205 | 10.4% |
+| equity + rates | 11 | autoencoder | 1.000 | 0.118 | 0.833 | 6.22 | 0.103 | 10.4% |
+| equity + rates | 11 | lightgbm | 0.667 | 0.280 | 0.667 | 3.11 | 0.187 | 10.4% |
+| fx + rates (no equity) | 10 | isolation forest | 0.667 | 0.151 | 1.000 | 3.25 | 0.206 | 3.4% |
+| fx + rates (no equity) | 10 | autoencoder | 0.667 | 0.159 | 0.833 | 5.09 | 0.104 | 4.0% |
+| fx + rates (no equity) | 10 | lightgbm | 0.333 | 0.049 | 1.000 | 0.00 | 0.022 | 100.0% |
+| all features | 16 | isolation forest | 1.000 | 0.253 | 1.000 | 4.24 | 0.217 | 8.3% |
+| all features | 16 | autoencoder | 0.667 | 0.254 | 0.833 | 4.10 | 0.115 | 4.3% |
+| all features | 16 | lightgbm | 1.000 | 0.209 | 0.833 | 1.41 | 0.233 | 14.3% |
+
+Feature group ablation with the registered configurations (seed 0), same protocol as the main pipeline. Differences are small relative to the seed spread and the 3 and 6 event counts and are not claimed as effects. The share of alarm days matters: a model that alarms on most days has a low false alarm episode count because one long episode overlaps an event window.
+
+### Walk-forward refit versus fixed fit
+
+| model | schedule | detected | test_fa_per_year | test_ap |
+|---|---|---|---|---|
+| isolation forest | fixed (fit before 2019) | 6 of 6 | 4.24 | 0.217 |
+| isolation forest | walk-forward, annual refit | 6 of 6 | 4.52 | 0.196 |
+| autoencoder | fixed (fit before 2019) | 5 of 6 | 4.10 | 0.115 |
+| autoencoder | walk-forward, annual refit | 3 of 6 | 4.10 | 0.089 |
+
+Walk-forward: before each test year the model is refit on all earlier data and its threshold recalibrated on the previous four years (non-event days, same budget). The fixed schedule used for promotion is shown for comparison; it was not changed.
 <!-- END:extra -->
 
 ## Explainability

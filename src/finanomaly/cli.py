@@ -214,8 +214,27 @@ def refresh() -> None:
 
 @app.command()
 def report() -> None:
-    """Regenerate the generated blocks of README.md from results/."""
+    """Regenerate the generated blocks of README.md and MODEL_CARD.md from results/."""
+    from pathlib import Path
+
     from finanomaly.config import get_config
     from finanomaly.evaluation.readme_blocks import update_readme
 
-    typer.echo(update_readme(get_config()))
+    cfg = get_config()
+    typer.echo(update_readme(cfg))
+    typer.echo(update_readme(cfg, Path(cfg.root) / "docs" / "MODEL_CARD.md"))
+
+
+@app.command()
+def robustness(
+    only: str = typer.Option(
+        "", help="comma separated: loeo,sensitivity,crosscheck,ablation,walkforward"
+    ),
+) -> None:
+    """Supplementary analyses (leave-one-event-out, sensitivity, cross-checks, walk-forward)."""
+    from finanomaly.config import get_config
+    from finanomaly.context import load_context
+    from finanomaly.evaluation.robustness import run_all
+
+    which = [s for s in only.split(",") if s] or None
+    typer.echo(run_all(load_context(get_config()), which))

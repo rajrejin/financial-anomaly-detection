@@ -225,15 +225,144 @@ def _render_table(d: dict) -> str:
     return "\n".join(rows) + "\n\n" + d.get("note", "")
 
 
+def _render_loeo_pivot(d: dict) -> str:
+    models = list(dict.fromkeys(r["model"] for r in d["rows"]))
+    events = list(dict.fromkeys(r["event"] for r in d["rows"]))
+    out = ["| Held-out event | " + " | ".join(models) + " |", "|---|" + "---|" * len(models)]
+    for e in events:
+        cells = []
+        for m in models:
+            r = next(x for x in d["rows"] if x["event"] == e and x["model"] == m)
+            cells.append(r["delay"] if r["detected"] == "yes" else "missed")
+        out.append(f"| {e} | " + " | ".join(cells) + " |")
+    return "\n".join(out) + "\n\n" + d.get("note", "")
+
+
 EXTRA_RENDERERS: list[tuple[str, str, Callable[[dict], str]]] = [
-    ("loeo.json", "Leave-one-event-out", _render_table),
+    ("loeo.json", "Leave-one-event-out", _render_loeo_pivot),
     ("sensitivity.json", "Sensitivity to windows, budget and training start", _render_table),
     ("crosscheck.json", "Cross-checks between models", _render_table),
+    ("alarm_share.json", "Share of alarm days in the test period", _render_table),
     ("ablation.json", "Feature group ablation", _render_table),
     ("walkforward.json", "Walk-forward refit versus fixed fit", _render_table),
 ]
 
+
+def block_findings(cfg: Config) -> str:
+    """Plain sentences whose numbers are read from the result files."""
+    t = _load(cfg, "test_summary.json")
+    a = _load(cfg, "alarm_share.json")
+    sd = _load(cfg, "seed_stability.json")
+    lo = _load(cfg, "loeo.json")
+    sens = _load(cfg, "sensitivity.json")
+    wf = _load(cfg, "walkforward.json")
+    if not (t and a and sd):
+        return "Not yet available."
+    share = {r["entry"]: r for r in a["rows"]}
+    ent = {e["label"].replace(" (champion)", ""): e for e in t["entries"]}
+    out = []
+    for name, e in ent.items():
+        sh = share.get(name)
+        out.append(
+            f"* {name}: {e['n_detected']} of {e['n_events']} test events detected, "
+            f"{_f(e['false_alarm_rate'], 2)} false alarm episodes per year, "
+            f"{sh['share_of_test_days'] if sh else 'n/a'} of test days in alarm "
+            f"(mean episode {sh['mean_episode_days'] if sh else 'n/a'} days)."
+        )
+    budget = cfg.alarm.budget_per_year
+    over = [n for n, e in ent.items() if n.startswith("anomaly") and e["false_alarm_rate"] > budget]
+    if over:
+        out.append(
+            f"* The budget used to set thresholds was {budget:g} false alarm episodes per year. "
+            f"Exceeded in the test period by: {', '.join(over)}."
+        )
+    out.append(
+        "* The false alarm episode count ignores episodes that overlap an event window, so a "
+        "model that alarms on many days can show few episodes; read it together with the share "
+        "of alarm days."
+    )
+    ae = sd.get("autoencoder")
+    if ae:
+        out.append(
+            f"* Autoencoder test recall over 5 seeds: mean {_f(ae['test_recall_mean'])}, spread "
+            f"{_f(ae['test_recall_std'])}."
+        )
+    if lo:
+        per: dict[str, int] = {}
+        tot: dict[str, int] = {}
+        for r in lo["rows"]:
+            tot[r["model"]] = tot.get(r["model"], 0) + 1
+            per[r["model"]] = per.get(r["model"], 0) + (r["detected"] == "yes")
+        out.append(
+            "* Leave-one-event-out detections: "
+            + ", ".join(f"{m} {per[m]} of {tot[m]}" for m in per)
+            + "."
+        )
+    if sens:
+        for r in sens["rows"]:
+            if r["setting"].startswith("false alarm budget 1 "):
+                out.append(
+                    f"* With a budget of 1 episode per year, {r['model']} test recall is "
+                    f"{r['test_recall']} (labelled sensitivity analysis, not used to retune)."
+                )
+    if wf:
+        for r in wf["rows"]:
+            out.append(
+                f"* Walk-forward check, {r['model']}, {r['schedule']}: {r['detected']} events, "
+                f"{r['test_fa_per_year']} false alarm episodes per year."
+            )
+    return "\n".join(out)
+
+
+def block_modelcard(cfg: Config) -> str:
+    dec = _load(cfg, "promotion_decision.json")
+    reg = _load(cfg, "registration.json")
+    t = _load(cfg, "test_summary.json")
+    sd = _load(cfg, "seed_stability.json")
+    if not (dec and dec["champion"] and reg):
+        return "No promoted model."
+    c = dec["champion"]
+    info = reg[c["family"]]
+    from finanomaly.experiments.runner import load_experiments
+
+    params = load_experiments()[c["family"]][info["config_idx"]]
+    man_path = Path(cfg.root) / cfg.serving.model_dir / "manifest.json"
+    man = json.loads(man_path.read_text()) if man_path.exists() else {}
+    rows = [
+        "| Item | Value |",
+        "|---|---|",
+        f"| Registered name and version | {c['name']} version {c['version']} (alias production) |",
+        f"| Family and configuration | {c['family']}, configuration {info['config_idx']}: "
+        f"`{params}` |",
+        f"| Fit data | all data before {cfg.splits.test_start} (features valid from 2000-12) |",
+        f"| Alarm threshold | {_f(man.get('threshold'), 4)} (score scale of the model) |",
+        f"| Validation (fit before 2015, 2015 to 2018) | recall {_f(c['recall'])}, "
+        f"{_f(c['fa_rate'], 2)} false alarm episodes per year, AP {_f(c['ap'])} |",
+    ]
+    if sd and c["family"] in sd:
+        v = sd[c["family"]]
+        rows.append(
+            f"| Seed spread (5 seeds), test | recall {_f(v['test_recall_mean'])} "
+            f"(std {_f(v['test_recall_std'])}), FA per year {_f(v['test_fa_mean'], 2)} "
+            f"(std {_f(v['test_fa_std'], 2)}) |"
+        )
+    if t:
+        e = next(x for x in t["entries"] if x["label"].startswith(c["name"]))
+        rows.append(
+            f"| Test period (2019 onward) | {e['n_detected']} of {e['n_events']} events, "
+            f"{_f(e['false_alarm_rate'], 2)} false alarm episodes per year, AP "
+            f"{_f(e['average_precision'])} |"
+        )
+    if man:
+        rows.append(f"| Data hash | `{man['data_hash'][:16]}` |")
+        rows.append(f"| Events hash | `{man['events_hash'][:16]}` |")
+        rows.append(f"| Git commit at export | `{man['git_commit'][:10]}` |")
+    return "\n".join(rows)
+
+
 BLOCKS: dict[str, Callable[[Config], str]] = {
+    "modelcard": block_modelcard,
+    "findings": block_findings,
     "headline": block_headline,
     "events": block_events,
     "catalog": block_catalog,
@@ -245,6 +374,13 @@ BLOCKS: dict[str, Callable[[Config], str]] = {
 }
 
 
+def _replacer(body: str) -> Callable[[re.Match[str]], str]:
+    def repl(m: re.Match[str]) -> str:
+        return m.group(1) + "\n" + body + "\n" + m.group(3)
+
+    return repl
+
+
 def update_readme(cfg: Config, path: Path | None = None) -> list[str]:
     path = path or Path(cfg.root) / "README.md"
     text = path.read_text(encoding="utf-8")
@@ -253,7 +389,7 @@ def update_readme(cfg: Config, path: Path | None = None) -> list[str]:
         pat = re.compile(rf"(<!-- BEGIN:{name} -->)(.*?)(<!-- END:{name} -->)", re.DOTALL)
         if pat.search(text):
             body = fn(cfg)
-            text = pat.sub(lambda m, b=body: f"{m.group(1)}\n{b}\n{m.group(3)}", text)
+            text = pat.sub(_replacer(body), text)
             done.append(name)
     path.write_text(text, encoding="utf-8")
     return done

@@ -75,4 +75,14 @@ and to the training start (labelled analyses, not used to retune); feature group
 walk-forward annual refit versus the fixed schedule.
 
 ## Deviations
-(none yet)
+
+Recorded after the fact, with reasons (also in `docs/DECISIONS.md`):
+
+1. Data start moved from 2000 to 1999 before any model ran (feature warm-up). Splits unchanged.
+2. The alarm day cap was added to the protocol before the first experiment (text above).
+3. The `alarm_day_share` metric was added after the test evaluation; it changes no earlier number.
+4. `finanomaly evaluate` ran twice because of a crash in the stability section; see
+   `docs/KNOWN_ISSUES.md`, item 1.
+5. The supplementary analyses (leave-one-event-out, sensitivity, cross-checks, ablation,
+   walk-forward) use test-period information and are labelled as such; none was used to change a
+   choice.

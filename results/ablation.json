@@ -1,0 +1,181 @@
+{
+  "columns": [
+    "features",
+    "n_features",
+    "model",
+    "val_recall",
+    "val_ap",
+    "test_recall",
+    "test_fa_per_year",
+    "test_ap",
+    "test_alarm_days"
+  ],
+  "rows": [
+    {
+      "features": "equity only",
+      "n_features": 6,
+      "model": "isolation forest",
+      "val_recall": "0.667",
+      "val_ap": "0.277",
+      "test_recall": "0.833",
+      "test_fa_per_year": "2.26",
+      "test_ap": "0.155",
+      "test_alarm_days": "10.2%"
+    },
+    {
+      "features": "equity only",
+      "n_features": 6,
+      "model": "autoencoder",
+      "val_recall": "0.333",
+      "val_ap": "0.045",
+      "test_recall": "0.833",
+      "test_fa_per_year": "1.98",
+      "test_ap": "0.040",
+      "test_alarm_days": "9.4%"
+    },
+    {
+      "features": "equity only",
+      "n_features": 6,
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "val_ap": "0.204",
+      "test_recall": "0.667",
+      "test_fa_per_year": "1.84",
+      "test_ap": "0.204",
+      "test_alarm_days": "7.4%"
+    },
+    {
+      "features": "equity + fx",
+      "n_features": 11,
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "val_ap": "0.374",
+      "test_recall": "0.833",
+      "test_fa_per_year": "2.40",
+      "test_ap": "0.209",
+      "test_alarm_days": "7.0%"
+    },
+    {
+      "features": "equity + fx",
+      "n_features": 11,
+      "model": "autoencoder",
+      "val_recall": "1.000",
+      "val_ap": "0.379",
+      "test_recall": "0.667",
+      "test_fa_per_year": "5.09",
+      "test_ap": "0.123",
+      "test_alarm_days": "5.7%"
+    },
+    {
+      "features": "equity + fx",
+      "n_features": 11,
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "val_ap": "0.221",
+      "test_recall": "0.667",
+      "test_fa_per_year": "1.98",
+      "test_ap": "0.191",
+      "test_alarm_days": "7.8%"
+    },
+    {
+      "features": "equity + rates",
+      "n_features": 11,
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "val_ap": "0.192",
+      "test_recall": "1.000",
+      "test_fa_per_year": "4.66",
+      "test_ap": "0.205",
+      "test_alarm_days": "10.4%"
+    },
+    {
+      "features": "equity + rates",
+      "n_features": 11,
+      "model": "autoencoder",
+      "val_recall": "1.000",
+      "val_ap": "0.118",
+      "test_recall": "0.833",
+      "test_fa_per_year": "6.22",
+      "test_ap": "0.103",
+      "test_alarm_days": "10.4%"
+    },
+    {
+      "features": "equity + rates",
+      "n_features": 11,
+      "model": "lightgbm",
+      "val_recall": "0.667",
+      "val_ap": "0.280",
+      "test_recall": "0.667",
+      "test_fa_per_year": "3.11",
+      "test_ap": "0.187",
+      "test_alarm_days": "10.4%"
+    },
+    {
+      "features": "fx + rates (no equity)",
+      "n_features": 10,
+      "model": "isolation forest",
+      "val_recall": "0.667",
+      "val_ap": "0.151",
+      "test_recall": "1.000",
+      "test_fa_per_year": "3.25",
+      "test_ap": "0.206",
+      "test_alarm_days": "3.4%"
+    },
+    {
+      "features": "fx + rates (no equity)",
+      "n_features": 10,
+      "model": "autoencoder",
+      "val_recall": "0.667",
+      "val_ap": "0.159",
+      "test_recall": "0.833",
+      "test_fa_per_year": "5.09",
+      "test_ap": "0.104",
+      "test_alarm_days": "4.0%"
+    },
+    {
+      "features": "fx + rates (no equity)",
+      "n_features": 10,
+      "model": "lightgbm",
+      "val_recall": "0.333",
+      "val_ap": "0.049",
+      "test_recall": "1.000",
+      "test_fa_per_year": "0.00",
+      "test_ap": "0.022",
+      "test_alarm_days": "100.0%"
+    },
+    {
+      "features": "all features",
+      "n_features": 16,
+      "model": "isolation forest",
+      "val_recall": "1.000",
+      "val_ap": "0.253",
+      "test_recall": "1.000",
+      "test_fa_per_year": "4.24",
+      "test_ap": "0.217",
+      "test_alarm_days": "8.3%"
+    },
+    {
+      "features": "all features",
+      "n_features": 16,
+      "model": "autoencoder",
+      "val_recall": "0.667",
+      "val_ap": "0.254",
+      "test_recall": "0.833",
+      "test_fa_per_year": "4.10",
+      "test_ap": "0.115",
+      "test_alarm_days": "4.3%"
+    },
+    {
+      "features": "all features",
+      "n_features": 16,
+      "model": "lightgbm",
+      "val_recall": "1.000",
+      "val_ap": "0.209",
+      "test_recall": "0.833",
+      "test_fa_per_year": "1.41",
+      "test_ap": "0.233",
+      "test_alarm_days": "14.3%"
+    }
+  ],
+  "note": "Feature group ablation with the registered configurations (seed 0), same protocol as the main pipeline. Differences are small relative to the seed spread and the 3 and 6 event counts and are not claimed as effects. The share of alarm days matters: a model that alarms on most days has a low false alarm episode count because one long episode overlaps an event window."
+}

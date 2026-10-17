@@ -1,0 +1,461 @@
+{
+  "columns": [
+    "event",
+    "model",
+    "detected",
+    "delay"
+  ],
+  "rows": [
+    {
+      "event": "sept11_2001",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "sept11_2001",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "sept11_2001",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "sept11_2001",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "sept11_2001",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "worldcom_2002",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+5"
+    },
+    {
+      "event": "worldcom_2002",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "worldcom_2002",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+1"
+    },
+    {
+      "event": "worldcom_2002",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+1"
+    },
+    {
+      "event": "worldcom_2002",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "lehman_2008",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+4"
+    },
+    {
+      "event": "lehman_2008",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "+4"
+    },
+    {
+      "event": "lehman_2008",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+4"
+    },
+    {
+      "event": "lehman_2008",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+15"
+    },
+    {
+      "event": "lehman_2008",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "crash_oct2008",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "crash_oct2008",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "crash_oct2008",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "crash_oct2008",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+2"
+    },
+    {
+      "event": "crash_oct2008",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "flash_crash_2010",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+2"
+    },
+    {
+      "event": "flash_crash_2010",
+      "model": "rule_vol",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "flash_crash_2010",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+1"
+    },
+    {
+      "event": "flash_crash_2010",
+      "model": "autoencoder",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "flash_crash_2010",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+2"
+    },
+    {
+      "event": "aug2011_selloff",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "aug2011_selloff",
+      "model": "rule_vol",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "aug2011_selloff",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "aug2011_selloff",
+      "model": "autoencoder",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "aug2011_selloff",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "-1"
+    },
+    {
+      "event": "snb_floor_2015",
+      "model": "rule_return",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "snb_floor_2015",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "snb_floor_2015",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+6"
+    },
+    {
+      "event": "snb_floor_2015",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+4"
+    },
+    {
+      "event": "snb_floor_2015",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "-1"
+    },
+    {
+      "event": "china_aug2015",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "china_aug2015",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "china_aug2015",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "china_aug2015",
+      "model": "autoencoder",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "china_aug2015",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+1"
+    },
+    {
+      "event": "brexit_2016",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "brexit_2016",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "brexit_2016",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "brexit_2016",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "brexit_2016",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "covid_crash_2020",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "covid_crash_2020",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "covid_crash_2020",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+4"
+    },
+    {
+      "event": "covid_crash_2020",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+11"
+    },
+    {
+      "event": "covid_crash_2020",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "ukraine_invasion_2022",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "ukraine_invasion_2022",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "+9"
+    },
+    {
+      "event": "ukraine_invasion_2022",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "ukraine_invasion_2022",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+3"
+    },
+    {
+      "event": "ukraine_invasion_2022",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+1"
+    },
+    {
+      "event": "ecb_hike_2022",
+      "model": "rule_return",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "ecb_hike_2022",
+      "model": "rule_vol",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "ecb_hike_2022",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+4"
+    },
+    {
+      "event": "ecb_hike_2022",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+4"
+    },
+    {
+      "event": "ecb_hike_2022",
+      "model": "lightgbm",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "svb_credit_suisse_2023",
+      "model": "rule_return",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "svb_credit_suisse_2023",
+      "model": "rule_vol",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "svb_credit_suisse_2023",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+1"
+    },
+    {
+      "event": "svb_credit_suisse_2023",
+      "model": "autoencoder",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "svb_credit_suisse_2023",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+6"
+    },
+    {
+      "event": "carry_unwind_2024",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "carry_unwind_2024",
+      "model": "rule_vol",
+      "detected": "no",
+      "delay": "n/a"
+    },
+    {
+      "event": "carry_unwind_2024",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "-1"
+    },
+    {
+      "event": "carry_unwind_2024",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "carry_unwind_2024",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "-2"
+    },
+    {
+      "event": "tariff_shock_2025",
+      "model": "rule_return",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "tariff_shock_2025",
+      "model": "rule_vol",
+      "detected": "yes",
+      "delay": "+1"
+    },
+    {
+      "event": "tariff_shock_2025",
+      "model": "isolation_forest",
+      "detected": "yes",
+      "delay": "+0"
+    },
+    {
+      "event": "tariff_shock_2025",
+      "model": "autoencoder",
+      "detected": "yes",
+      "delay": "+1"
+    },
+    {
+      "event": "tariff_shock_2025",
+      "model": "lightgbm",
+      "detected": "yes",
+      "delay": "+0"
+    }
+  ],
+  "note": "Each event is held out in turn: unsupervised models and rule thresholds are fit and calibrated with the event treated as ordinary data (budget 3 per year over the whole sample); LightGBM is trained on the other events' labels without the held-out rows, with its threshold from out-of-fold probabilities (5 time blocks). Not chronological, so later events inform earlier ones. Detected events per model: autoencoder 11 of 15, isolation_forest 15 of 15, lightgbm 14 of 15, rule_return 12 of 15, rule_vol 10 of 15."
+}
