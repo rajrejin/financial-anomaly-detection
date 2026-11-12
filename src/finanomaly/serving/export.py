@@ -21,9 +21,9 @@ import mlflow.artifacts
 from mlflow.tracking import MlflowClient
 
 from finanomaly.config import Config, sha256_file
+from finanomaly.environment import git_commit
 from finanomaly.experiments import tracking
 from finanomaly.experiments.runner import REGISTRY_NAMES
-from finanomaly.progress import git_commit
 from finanomaly.serving.manifest import file_checksums
 
 

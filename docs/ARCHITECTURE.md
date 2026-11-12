@@ -40,7 +40,6 @@ flowchart TB
     testeval[test_eval.py]
     robust[robustness.py]
     review[review.py]
-    blocks[readme_blocks.py]
   end
   subgraph serve[finanomaly.serving + api]
     export[export.py]

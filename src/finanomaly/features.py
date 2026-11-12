@@ -43,66 +43,87 @@ DEFAULT_FLOOR = 1e-6
 Z_CLIP = 10.0
 
 
-def base_features(t: pd.DataFrame, cfg: Config) -> pd.DataFrame:
-    f = pd.DataFrame(index=t.index)
-    lr = lambda s: np.log(s).diff()  # noqa: E731
-    f["r_dax"] = lr(t["dax_close"])
-    f["r_usd"] = lr(t["usd_per_eur"])
-    f["r_chf"] = lr(t["chf_per_eur"])
-    f["r_gbp"] = lr(t["gbp_per_eur"])
-    f["r_jpy"] = lr(t["jpy_per_eur"] / t["usd_per_eur"])  # USD/JPY via EUR
-    f["d_y2"] = t["de_yield_2y"].diff()
-    f["d_y10"] = t["de_yield_10y"].diff()
-    f["d_spread"] = (t["de_yield_10y"] - t["de_yield_2y"]).diff()
-    f["policy_rate"] = t["ecb_dfr"]
-    f["d_policy"] = t["ecb_dfr"].diff()
-    w1, w2, w3 = cfg.features.vol_windows
-    ann = np.sqrt(252.0)
-    f["vol5"] = f["r_dax"].rolling(w1).std() * ann
-    f["vol20"] = f["r_dax"].rolling(w2).std() * ann
-    f["vol60"] = f["r_dax"].rolling(w3).std() * ann
-    f["vol_ratio"] = f["vol5"] / f["vol60"]
-    dw = cfg.features.drawdown_window
-    f["drawdown"] = t["dax_close"] / t["dax_close"].rolling(dw, min_periods=dw).max() - 1.0
-    f["corr60"] = f["r_dax"].rolling(cfg.features.corr_window).corr(f["r_usd"])
-    return f[BASE_FEATURES]
+def base_features(table: pd.DataFrame, cfg: Config) -> pd.DataFrame:
+    """Raw daily features from the aligned price table (one row per DAX trading day)."""
+
+    def log_return(series: pd.Series) -> pd.Series:
+        return np.log(series).diff()
+
+    feats = pd.DataFrame(index=table.index)
+
+    # Daily log returns of the DAX and of the euro against four currencies.
+    feats["r_dax"] = log_return(table["dax_close"])
+    feats["r_usd"] = log_return(table["usd_per_eur"])
+    feats["r_chf"] = log_return(table["chf_per_eur"])
+    feats["r_gbp"] = log_return(table["gbp_per_eur"])
+    feats["r_jpy"] = log_return(table["jpy_per_eur"] / table["usd_per_eur"])  # USD/JPY via EUR
+
+    # Interest rates: day-over-day changes of German yields, their spread, and the ECB deposit rate.
+    feats["d_y2"] = table["de_yield_2y"].diff()
+    feats["d_y10"] = table["de_yield_10y"].diff()
+    feats["d_spread"] = (table["de_yield_10y"] - table["de_yield_2y"]).diff()
+    feats["policy_rate"] = table["ecb_dfr"]
+    feats["d_policy"] = table["ecb_dfr"].diff()
+
+    # Realised volatility of the DAX over short, medium and long windows, annualised.
+    short, medium, long = cfg.features.vol_windows
+    annualise = np.sqrt(252.0)
+    feats["vol5"] = feats["r_dax"].rolling(short).std() * annualise
+    feats["vol20"] = feats["r_dax"].rolling(medium).std() * annualise
+    feats["vol60"] = feats["r_dax"].rolling(long).std() * annualise
+    feats["vol_ratio"] = feats["vol5"] / feats["vol60"]
+
+    # Drawdown: how far the DAX is below its highest close of the last year.
+    window = cfg.features.drawdown_window
+    rolling_max = table["dax_close"].rolling(window, min_periods=window).max()
+    feats["drawdown"] = table["dax_close"] / rolling_max - 1.0
+
+    feats["corr60"] = feats["r_dax"].rolling(cfg.features.corr_window).corr(feats["r_usd"])
+    return feats[BASE_FEATURES]
 
 
 def _trailing_z_column(x: np.ndarray, window: int, floor: float) -> np.ndarray:
+    """Robust z-score of each value against the `window` values strictly before it.
+
+    z = (value - median) / (1.4826 * MAD). The factor 1.4826 makes the MAD comparable to a
+    standard deviation for normal data. The first `window` entries stay NaN.
+    """
     n = len(x)
     z = np.full(n, np.nan)
     if n <= window:
         return z
-    # windows[i] = x[i : i + window], used for day i + window (strictly past data)
-    win = sliding_window_view(x, window)[: n - window]
+    # past[i] = x[i : i + window] is the history used for day i + window, so day t never
+    # sees its own value or anything later.
+    past = sliding_window_view(x, window)[: n - window]
     with np.errstate(all="ignore"):
-        med = np.nanmedian(win, axis=1)
-        mad = np.nanmedian(np.abs(win - med[:, None]), axis=1) * 1.4826
-        sd = np.nanstd(win, axis=1)
-        valid = np.sum(~np.isnan(win), axis=1) == window
-    scale = np.where(mad > 0, mad, np.where(sd > 0, sd, floor))
+        median = np.nanmedian(past, axis=1)
+        mad = np.nanmedian(np.abs(past - median[:, None]), axis=1) * 1.4826
+        std = np.nanstd(past, axis=1)
+        history_complete = np.sum(~np.isnan(past), axis=1) == window
+    # Fall back from MAD to the standard deviation to a fixed floor when a series is flat.
+    scale = np.where(mad > 0, mad, np.where(std > 0, std, floor))
     scale = np.maximum(scale, floor)
-    cur = x[window:]
-    out = np.clip((cur - med) / scale, -Z_CLIP, Z_CLIP)
-    out[~valid] = np.nan
-    z[window:] = out
+    today = x[window:]
+    scores = np.clip((today - median) / scale, -Z_CLIP, Z_CLIP)
+    scores[~history_complete] = np.nan
+    z[window:] = scores
     return z
 
 
-def trailing_z(f: pd.DataFrame, window: int) -> pd.DataFrame:
-    out = {}
-    for c in f.columns:
-        floor = SCALE_FLOOR.get(c, DEFAULT_FLOOR)
-        out[c] = _trailing_z_column(f[c].to_numpy(dtype=float), window, floor)
-    return pd.DataFrame(out, index=f.index)
+def trailing_z(feats: pd.DataFrame, window: int) -> pd.DataFrame:
+    columns = {}
+    for name in feats.columns:
+        floor = SCALE_FLOOR.get(name, DEFAULT_FLOOR)
+        columns[name] = _trailing_z_column(feats[name].to_numpy(dtype=float), window, floor)
+    return pd.DataFrame(columns, index=feats.index)
 
 
-def build_features(t: pd.DataFrame, cfg: Config) -> tuple[pd.DataFrame, pd.DataFrame]:
+def build_features(table: pd.DataFrame, cfg: Config) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Return (base features, trailing z-scored model inputs)."""
-    base = base_features(t, cfg)
-    z = trailing_z(base, cfg.features.z_window)
-    return base, z
+    base = base_features(table, cfg)
+    return base, trailing_z(base, cfg.features.z_window)
 
 
 def valid_rows(z: pd.DataFrame) -> pd.Series:
+    """True for days where every z-scored feature is available."""
     return z.notna().all(axis=1)

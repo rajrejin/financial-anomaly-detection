@@ -1,4 +1,4 @@
-"""Explanation availability and additivity checks (used by the promotion gate and Phase 6)."""
+"""Explanation checks used by the promotion gate and the explain report."""
 
 from __future__ import annotations
 

@@ -20,8 +20,8 @@ from mlflow.tracking import MlflowClient  # noqa: E402
 
 from finanomaly.config import ROOT, Config, sha256_file  # noqa: E402
 from finanomaly.context import Context  # noqa: E402
+from finanomaly.environment import git_commit  # noqa: E402
 from finanomaly.experiments.runner import StageResult  # noqa: E402
-from finanomaly.progress import git_commit  # noqa: E402
 from finanomaly.serving.pyfunc_model import AnomalyPyfunc, save_model_dir  # noqa: E402
 
 log = logging.getLogger(__name__)

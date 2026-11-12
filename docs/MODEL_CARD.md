@@ -1,6 +1,5 @@
 # Model card: promoted anomaly detector
 
-<!-- BEGIN:modelcard -->
 | Item | Value |
 |---|---|
 | Registered name and version | anomaly-isolation-forest version 1 (alias production) |
@@ -13,7 +12,6 @@
 | Data hash | `c747aa62dba8e5fa` |
 | Events hash | `aee345cc128dab34` |
 | Git commit at export | `85c2d5d8a5` |
-<!-- END:modelcard -->
 
 ## Intended use
 

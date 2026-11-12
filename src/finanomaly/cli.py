@@ -213,19 +213,6 @@ def refresh() -> None:
 
 
 @app.command()
-def report() -> None:
-    """Regenerate the generated blocks of README.md and MODEL_CARD.md from results/."""
-    from pathlib import Path
-
-    from finanomaly.config import get_config
-    from finanomaly.evaluation.readme_blocks import update_readme
-
-    cfg = get_config()
-    typer.echo(update_readme(cfg))
-    typer.echo(update_readme(cfg, Path(cfg.root) / "docs" / "MODEL_CARD.md"))
-
-
-@app.command()
 def robustness(
     only: str = typer.Option(
         "", help="comma separated: loeo,sensitivity,crosscheck,ablation,walkforward"

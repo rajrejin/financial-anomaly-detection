@@ -1,4 +1,4 @@
-"""Phase 6: SHAP for tree models, reconstruction shares for the autoencoder, permutation
+"""SHAP for tree models, reconstruction shares for the autoencoder, permutation
 sensitivity for the isolation forest. Outputs: results/explain and results/explainability.json.
 Explanations describe model behaviour, not the causes of market moves."""
 

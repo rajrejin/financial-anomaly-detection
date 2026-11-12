@@ -53,7 +53,7 @@ def _save(cfg: Config, name: str, columns: list[str], rows: list[dict], note: st
 
 
 # ---------------------------------------------------------------------------------------------
-# Phase 9: leave-one-event-out
+# leave-one-event-out
 # ---------------------------------------------------------------------------------------------
 def _oof_scores(
     ctx: Context, params: dict[str, Any], y: np.ndarray, train_mask: np.ndarray, n_best: int
@@ -171,7 +171,7 @@ def leave_one_event_out(ctx: Context) -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Phase 9: sensitivity
+# sensitivity
 # ---------------------------------------------------------------------------------------------
 def _stage_pair(
     ctx: Context, fam: str, idx: int, params: dict, train_start: pd.Timestamp | None = None
@@ -249,7 +249,7 @@ def sensitivity(ctx: Context) -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Phase 10: cross-checks and ablation
+# cross-checks and ablation
 # ---------------------------------------------------------------------------------------------
 def crosscheck(ctx: Context) -> None:
     cfg = ctx.cfg
@@ -379,7 +379,7 @@ def ablation(ctx: Context) -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Phase 11: walk-forward refit
+# walk-forward refit
 # ---------------------------------------------------------------------------------------------
 def walkforward(ctx: Context) -> None:
     cfg = ctx.cfg

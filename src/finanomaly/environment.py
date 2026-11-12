@@ -1,9 +1,10 @@
-"""Write results/environment.json."""
+"""Environment facts: package versions (results/environment.json) and the current git commit."""
 
 from __future__ import annotations
 
 import json
 import platform
+import subprocess
 from importlib import metadata
 
 import psutil
@@ -37,3 +38,14 @@ def write_environment() -> dict:
     out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps(env, indent=2))
     return env
+
+
+def git_commit() -> str:
+    """Commit hash of the working tree, or "unknown" outside a git checkout (e.g. in Docker)."""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True
+        )
+        return result.stdout.strip()
+    except Exception:
+        return "unknown"

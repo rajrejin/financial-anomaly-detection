@@ -47,11 +47,13 @@ def count_false_alarms(
     n = len(alarm)
     in_seg = segment_mask(n, seg)
     excluded = mask_from(wins, n, "detect") | mask_from(wins, n, "buffer")
-    a = alarm & in_seg
-    eps = alarm_episodes(a, merge_gap)
-    false_eps = [(s, e) for s, e in eps if not excluded[s : e + 1].any()]
+    episodes = alarm_episodes(alarm & in_seg, merge_gap)
+    # An episode that touches any event window is not counted as a false alarm.
+    false_episodes = [
+        (start, end) for start, end in episodes if not excluded[start : end + 1].any()
+    ]
     years = float((in_seg & ~excluded).sum()) / TRADING_DAYS_PER_YEAR
-    return len(false_eps), years, false_eps
+    return len(false_episodes), years, false_episodes
 
 
 def detect_events(alarm: np.ndarray, seg: tuple[int, int], wins: list[EventWindows]) -> list[dict]:
@@ -86,16 +88,18 @@ def calibrate_threshold(
     max_day_share: float = 0.05,
 ) -> float:
     """Lowest threshold whose false alarm episode rate on `seg` is within the budget."""
-    s = scores[seg[0] : seg[1]]
-    s = s[~np.isnan(s)]
-    grid = np.unique(np.quantile(s, np.linspace(0.5, 1.0, n_grid)))
-    for thr in grid:
-        alarm = np.nan_to_num(scores, nan=-np.inf) > thr
-        k, years, _ = count_false_alarms(alarm, seg, wins, merge_gap)
-        in_seg = segment_mask(len(alarm), seg)
-        excl = mask_from(wins, len(alarm), "detect") | mask_from(wins, len(alarm), "buffer")
-        elig = in_seg & ~excl
-        share = float((alarm & elig).sum()) / max(int(elig.sum()), 1)
-        if years > 0 and k / years <= budget_per_year and share <= max_day_share:
-            return float(thr)
-    return float(grid[-1])
+    n = len(scores)
+    seg_scores = scores[seg[0] : seg[1]]
+    seg_scores = seg_scores[~np.isnan(seg_scores)]
+    # Candidate thresholds: the upper half of the score distribution, lowest first.
+    candidates = np.unique(np.quantile(seg_scores, np.linspace(0.5, 1.0, n_grid)))
+    excluded = mask_from(wins, n, "detect") | mask_from(wins, n, "buffer")
+    eligible = segment_mask(n, seg) & ~excluded
+    for threshold in candidates:
+        alarm = np.nan_to_num(scores, nan=-np.inf) > threshold
+        n_false, years, _ = count_false_alarms(alarm, seg, wins, merge_gap)
+        alarm_day_share = float((alarm & eligible).sum()) / max(int(eligible.sum()), 1)
+        within_budget = years > 0 and n_false / years <= budget_per_year
+        if within_budget and alarm_day_share <= max_day_share:
+            return float(threshold)
+    return float(candidates[-1])

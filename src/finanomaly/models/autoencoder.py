@@ -17,20 +17,22 @@ PATIENCE = 15
 BATCH = 128
 
 
-def _build(d: int, hidden: list[int], bottleneck: int, dropout: float) -> nn.Module:
-    enc: list[nn.Module] = []
-    prev = d
-    for h in hidden:
-        enc += [nn.Linear(prev, h), nn.ReLU(), nn.Dropout(dropout)]
-        prev = h
-    enc += [nn.Linear(prev, bottleneck)]
-    dec: list[nn.Module] = []
-    prev = bottleneck
-    for h in reversed(hidden):
-        dec += [nn.Linear(prev, h), nn.ReLU(), nn.Dropout(dropout)]
-        prev = h
-    dec += [nn.Linear(prev, d)]
-    return nn.Sequential(*enc, *dec)
+def _build(n_features: int, hidden: list[int], bottleneck: int, dropout: float) -> nn.Module:
+    """Encoder squeezes the input down to `bottleneck` numbers, decoder mirrors it back up."""
+    encoder: list[nn.Module] = []
+    width = n_features
+    for size in hidden:
+        encoder += [nn.Linear(width, size), nn.ReLU(), nn.Dropout(dropout)]
+        width = size
+    encoder += [nn.Linear(width, bottleneck)]
+
+    decoder: list[nn.Module] = []
+    width = bottleneck
+    for size in reversed(hidden):
+        decoder += [nn.Linear(width, size), nn.ReLU(), nn.Dropout(dropout)]
+        width = size
+    decoder += [nn.Linear(width, n_features)]
+    return nn.Sequential(*encoder, *decoder)
 
 
 class AutoencoderModel(AnomalyModel):
@@ -63,36 +65,42 @@ class AutoencoderModel(AnomalyModel):
         self.d = X.shape[1]
         p = self.params
         self.net = _build(self.d, list(p["hidden"]), int(p["bottleneck"]), float(p["dropout"]))
-        opt = torch.optim.AdamW(
+        optimizer = torch.optim.AdamW(
             self.net.parameters(), lr=float(p["lr"]), weight_decay=float(p["weight_decay"])
         )
         loss_fn = nn.MSELoss()
-        Xt = torch.tensor(X, dtype=torch.float32)
-        Xv = torch.tensor(X_val, dtype=torch.float32)
-        best, best_state, bad = float("inf"), None, 0
+        train = torch.tensor(X, dtype=torch.float32)
+        val = torch.tensor(X_val, dtype=torch.float32)
+
+        best_loss, best_weights, epochs_without_improvement = float("inf"), None, 0
         for epoch in range(MAX_EPOCHS):
+            # One pass over the training rows in shuffled mini-batches. The target is the
+            # input itself: the network is rewarded for reproducing normal days.
             self.net.train()
-            perm = rng.permutation(len(Xt))
-            for i in range(0, len(perm), BATCH):
-                b = Xt[perm[i : i + BATCH]]
-                opt.zero_grad()
-                loss = loss_fn(self.net(b), b)
+            order = rng.permutation(len(train))
+            for start in range(0, len(order), BATCH):
+                batch = train[order[start : start + BATCH]]
+                optimizer.zero_grad()
+                loss = loss_fn(self.net(batch), batch)
                 loss.backward()
-                opt.step()
+                optimizer.step()
+
+            # Early stopping: keep the weights with the lowest validation loss and stop once
+            # it has not improved for PATIENCE epochs.
             self.net.eval()
             with torch.no_grad():
-                v = float(loss_fn(self.net(Xv), Xv))
+                val_loss = float(loss_fn(self.net(val), val))
             self.epochs_run = epoch + 1
-            if v < best - 1e-6:
-                best, bad = v, 0
-                best_state = {k: t.clone() for k, t in self.net.state_dict().items()}
+            if val_loss < best_loss - 1e-6:
+                best_loss, epochs_without_improvement = val_loss, 0
+                best_weights = {k: t.clone() for k, t in self.net.state_dict().items()}
             else:
-                bad += 1
-                if bad >= PATIENCE:
+                epochs_without_improvement += 1
+                if epochs_without_improvement >= PATIENCE:
                     break
-        if best_state is not None:
-            self.net.load_state_dict(best_state)
-        self.best_val_loss = best
+        if best_weights is not None:
+            self.net.load_state_dict(best_weights)
+        self.best_val_loss = best_loss
         self.net.eval()
         return self
 
@@ -108,9 +116,9 @@ class AutoencoderModel(AnomalyModel):
 
     def explain(self, X: np.ndarray) -> np.ndarray:
         """Share of the squared reconstruction error carried by each feature (rows sum to 1)."""
-        e = self._errors(X)
-        tot = e.sum(axis=1, keepdims=True)
-        return e / np.where(tot > 0, tot, 1.0)
+        errors = self._errors(X)
+        total = errors.sum(axis=1, keepdims=True)
+        return errors / np.where(total > 0, total, 1.0)
 
     def save(self, path: Path) -> None:
         assert self.net is not None
