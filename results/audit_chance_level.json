@@ -1,0 +1,160 @@
+{
+  "n_test_events": 6,
+  "detection_window_days": 23,
+  "fast_window_days": 5,
+  "note": "Chance probabilities are estimated on test days outside all event windows and buffers. p-values are binomial tails assuming independent events, which is only approximately true. The oracle table thresholds every entry on the test scores to a common alarm-day share; it uses test information and is for interpretation only.",
+  "entries": [
+    {
+      "entry": "rule_return",
+      "alarm_day_share": 0.025227043390514632,
+      "detected": 4,
+      "chance_window_hit_prob": 0.19079754601226995,
+      "expected_by_chance": 1.1447852760736197,
+      "p_value_at_least_detected": 0.014292463679176847,
+      "fast_detected": 4,
+      "chance_fast_hit_prob": 0.058656036446469245,
+      "expected_fast_by_chance": 0.35193621867881547,
+      "p_value_at_least_fast": 0.00016130219831145428
+    },
+    {
+      "entry": "rule_vol",
+      "alarm_day_share": 0.04894046417759838,
+      "detected": 2,
+      "chance_window_hit_prob": 0.05644171779141104,
+      "expected_by_chance": 0.33865030674846625,
+      "p_value_at_least_detected": 0.0410359267461794,
+      "fast_detected": 2,
+      "chance_fast_hit_prob": 0.03189066059225513,
+      "expected_fast_by_chance": 0.19134396355353078,
+      "p_value_at_least_fast": 0.014003641191611424
+    },
+    {
+      "entry": "anomaly-isolation-forest",
+      "alarm_day_share": 0.08324924318869828,
+      "detected": 6,
+      "chance_window_hit_prob": 0.31349693251533745,
+      "expected_by_chance": 1.8809815950920248,
+      "p_value_at_least_detected": 0.0009492918982279318,
+      "fast_detected": 5,
+      "chance_fast_hit_prob": 0.12984054669703873,
+      "expected_fast_by_chance": 0.7790432801822325,
+      "p_value_at_least_fast": 0.00019745592667158492
+    },
+    {
+      "entry": "anomaly-autoencoder",
+      "alarm_day_share": 0.04339051463168517,
+      "detected": 5,
+      "chance_window_hit_prob": 0.2656441717791411,
+      "expected_by_chance": 1.5938650306748468,
+      "p_value_at_least_detected": 0.006179932947669059,
+      "fast_detected": 3,
+      "chance_fast_hit_prob": 0.09567198177676538,
+      "expected_fast_by_chance": 0.5740318906605922,
+      "p_value_at_least_fast": 0.014024754197024805
+    },
+    {
+      "entry": "anomaly-lightgbm",
+      "alarm_day_share": 0.14278506559031282,
+      "detected": 5,
+      "chance_window_hit_prob": 0.19202453987730062,
+      "expected_by_chance": 1.1521472392638037,
+      "p_value_at_least_detected": 0.0013158416505708941,
+      "fast_detected": 5,
+      "chance_fast_hit_prob": 0.1264236902050114,
+      "expected_fast_by_chance": 0.7585421412300684,
+      "p_value_at_least_fast": 0.0001733585389993052
+    }
+  ],
+  "oracle_matched_share": [
+    {
+      "alarm_day_share": 0.025,
+      "entry": "rule_return",
+      "detected": 4,
+      "fast_detected": 4
+    },
+    {
+      "alarm_day_share": 0.025,
+      "entry": "rule_vol",
+      "detected": 2,
+      "fast_detected": 1
+    },
+    {
+      "alarm_day_share": 0.025,
+      "entry": "anomaly-isolation-forest",
+      "detected": 4,
+      "fast_detected": 3
+    },
+    {
+      "alarm_day_share": 0.025,
+      "entry": "anomaly-autoencoder",
+      "detected": 4,
+      "fast_detected": 0
+    },
+    {
+      "alarm_day_share": 0.025,
+      "entry": "anomaly-lightgbm",
+      "detected": 3,
+      "fast_detected": 3
+    },
+    {
+      "alarm_day_share": 0.05,
+      "entry": "rule_return",
+      "detected": 5,
+      "fast_detected": 5
+    },
+    {
+      "alarm_day_share": 0.05,
+      "entry": "rule_vol",
+      "detected": 2,
+      "fast_detected": 2
+    },
+    {
+      "alarm_day_share": 0.05,
+      "entry": "anomaly-isolation-forest",
+      "detected": 6,
+      "fast_detected": 4
+    },
+    {
+      "alarm_day_share": 0.05,
+      "entry": "anomaly-autoencoder",
+      "detected": 5,
+      "fast_detected": 3
+    },
+    {
+      "alarm_day_share": 0.05,
+      "entry": "anomaly-lightgbm",
+      "detected": 4,
+      "fast_detected": 4
+    },
+    {
+      "alarm_day_share": 0.083,
+      "entry": "rule_return",
+      "detected": 6,
+      "fast_detected": 6
+    },
+    {
+      "alarm_day_share": 0.083,
+      "entry": "rule_vol",
+      "detected": 3,
+      "fast_detected": 2
+    },
+    {
+      "alarm_day_share": 0.083,
+      "entry": "anomaly-isolation-forest",
+      "detected": 6,
+      "fast_detected": 5
+    },
+    {
+      "alarm_day_share": 0.083,
+      "entry": "anomaly-autoencoder",
+      "detected": 6,
+      "fast_detected": 5
+    },
+    {
+      "alarm_day_share": 0.083,
+      "entry": "anomaly-lightgbm",
+      "detected": 4,
+      "fast_detected": 4
+    }
+  ]
+}

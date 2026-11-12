@@ -41,3 +41,4 @@ markers = ["needs_data: requires cached real data"]
 
 [tool.coverage.run]
 source = ["src/finanomaly", "api"]
+
